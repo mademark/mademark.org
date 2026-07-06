@@ -1,0 +1,49 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+
+# Correct content type for JSON-LD files
+<IfModule mod_mime.c>
+  AddType application/ld+json .json
+</IfModule>
+
+# Correct content type for SVG files
+<IfModule mod_mime.c>
+  AddType image/svg+xml .svg
+</IfModule>
+
+# Force download for ZIP files
+<FilesMatch "\.(zip)$">
+  ForceType application/octet-stream
+  Header set Content-Disposition attachment
+</FilesMatch>
+
+# Cache static assets for performance
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType text/html "access plus 1 hour"
+  ExpiresByType application/ld+json "access plus 1 hour"
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Redirect www to non-www
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^www\.mademark\.org [NC]
+  RewriteRule ^(.*)$ https://mademark.org/$1 [R=301,L]
+</IfModule>
+
+# Force HTTPS
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generate a label | Made Mark</title>
+  <meta name="description" content="Generate a Made Mark label for your content. Choose your authorship mark, enter tool details, and copy machine-readable output for web, image, C2PA, or badge.">
+  <link rel="canonical" href="https://mademark.org/generate/">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Generate a label | Made Mark">
+  <meta property="og:description" content="Generate a Made Mark label for your content. Choose your authorship mark, enter tool details, and copy machine-readable output.">
+  <meta property="og:url" content="https://mademark.org/generate/">
+  <meta property="og:image" content="https://mademark.org/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Generate a label | Made Mark">
+  <meta name="twitter:description" content="Generate a Made Mark label for your content.">
+  <meta name="twitter:image" content="https://mademark.org/assets/og-image.png">
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="/" class="logo-link">
+      <img src="/assets/svg/mm-logo-dark.svg" alt="Made Mark" class="logo">
+    </a>
+    <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Main navigation">
+  <a href="/">Overview</a>
+  <a href="/marks/">The three marks</a>
+  <a href="/generate/" class="active">Generate a label</a>
+  <a href="/governance/">Governance</a>
+  <a href="/downloads/">Downloads</a>
+    <a href="/colophon/">Colophon</a>
+</nav>
+
+<div class="page-layout">
+  <nav class="sidebar-nav" aria-label="Main navigation">
+    <a href="/">Overview</a>
+    <a href="/marks/">The three marks</a>
+    <a href="/generate/" class="active">Generate a label</a>
+    <a href="/governance/">Governance</a>
+    <a href="/downloads/">Downloads</a>
+    <a href="/colophon/">Colophon</a>
+  </nav>
+
+  <main class="content" id="main-content" role="main">
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <span aria-current="page">Generate a label</span>
+    </nav>
+
+    <div class="section">
+      <h1>Generate a label</h1>
+      <p>Choose your authorship mark, optionally add the tool you used, and copy the output into your content.</p>
+
+      <div style="margin-top: 32px;">
+        <h2 id="mark-selector-label">How was this content made? <span class="caption">(required)</span></h2>
+
+        <div class="gen-cards" id="gen-cards" role="group" aria-labelledby="mark-selector-label">
+          <button type="button" class="gen-card" aria-pressed="false" data-mark="human-made" data-name="Human Made">
+            <img src="/assets/svg/mm-icon-human-made.svg" alt="" aria-hidden="true">
+            <div class="gen-card-text">
+              <strong>Human Made</strong>
+              <span>Conceived and produced by people.</span>
+            </div>
+          </button>
+          <button type="button" class="gen-card" aria-pressed="false" data-mark="human-designed-ai-made" data-name="Human Designed, AI Made">
+            <img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" aria-hidden="true">
+            <div class="gen-card-text">
+              <strong>Human Designed, AI Made</strong>
+              <span>Human creative direction, AI production.</span>
+            </div>
+          </button>
+          <button type="button" class="gen-card" aria-pressed="false" data-mark="ai-made" data-name="AI Made">
+            <img src="/assets/svg/mm-icon-ai-made.svg" alt="" aria-hidden="true">
+            <div class="gen-card-text">
+              <strong>AI Made</strong>
+              <span>Conceived and produced primarily by AI.</span>
+            </div>
+          </button>
+        </div>
+        <p class="error-msg" id="gen-error" role="alert" style="display: none;">Please select a mark before copying.</p>
+      </div>
+
+      <div id="tool-details" class="gen-inputs" style="display: none; margin-top: 32px;">
+        <h2>Tool details <span class="caption">(optional)</span></h2>
+        <p class="caption" id="tool-desc" style="margin-bottom: 16px;">These become optional fields in your label. Leave blank to use the short form.</p>
+        <div class="gen-input-group">
+          <label for="gen-model">Model</label>
+          <input type="text" id="gen-model" placeholder="Claude Sonnet 4.6" aria-describedby="tool-desc">
+        </div>
+        <div class="gen-input-group">
+          <label for="gen-provider">Provider</label>
+          <input type="text" id="gen-provider" placeholder="Anthropic" aria-describedby="tool-desc">
+        </div>
+        <div class="gen-input-group">
+          <label for="gen-license">Source license</label>
+          <input type="text" id="gen-license" placeholder="CC BY 4.0" aria-describedby="tool-desc">
+        </div>
+      </div>
+
+      <div style="margin-top: 32px;">
+        <h2>Your label</h2>
+      </div>
+
+      <div id="gen-placeholder" class="gen-placeholder">Select a mark above to generate your label.</div>
+
+      <div id="gen-output" style="display: none;">
+        <div class="gen-tabs" id="gen-tabs" role="tablist" aria-label="Output format">
+          <button type="button" class="gen-tab active" role="tab" aria-selected="true" aria-controls="panel-jsonld" id="tab-jsonld" tabindex="0" data-panel="panel-jsonld">Web page (JSON-LD)</button>
+          <button type="button" class="gen-tab" role="tab" aria-selected="false" aria-controls="panel-xmp" id="tab-xmp" tabindex="-1" data-panel="panel-xmp">Image / video (XMP)</button>
+          <button type="button" class="gen-tab" role="tab" aria-selected="false" aria-controls="panel-c2pa" id="tab-c2pa" tabindex="-1" data-panel="panel-c2pa">Developer (C2PA)</button>
+          <button type="button" class="gen-tab" role="tab" aria-selected="false" aria-controls="panel-badge" id="tab-badge" tabindex="-1" data-panel="panel-badge">Badge (HTML)</button>
+        </div>
+
+        <div class="gen-panel active" id="panel-jsonld" role="tabpanel" aria-labelledby="tab-jsonld">
+          <p class="caption">Paste into your HTML &lt;head&gt; element.</p>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy JSON-LD to clipboard">Copy JSON-LD</button>
+            <pre id="out-jsonld"></pre>
+          </div>
+        </div>
+
+        <div class="gen-panel" id="panel-xmp" role="tabpanel" aria-labelledby="tab-xmp">
+          <p class="caption">Add to your file's XMP metadata block.</p>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy XMP to clipboard">Copy XMP</button>
+            <pre id="out-xmp"></pre>
+          </div>
+        </div>
+
+        <div class="gen-panel" id="panel-c2pa" role="tabpanel" aria-labelledby="tab-c2pa">
+          <p class="caption">Include this assertion in your C2PA manifest.</p>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy C2PA assertion to clipboard">Copy C2PA</button>
+            <pre id="out-c2pa"></pre>
+          </div>
+        </div>
+
+        <div class="gen-panel" id="panel-badge" role="tabpanel" aria-labelledby="tab-badge">
+          <p class="caption">Paste into your webpage to display a clickable Made Mark badge linking to the mark definition.</p>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy badge HTML to clipboard">Copy badge</button>
+            <pre id="out-badge"></pre>
+          </div>
+        </div>
+
+        <div class="gen-plain-label">
+          <p class="caption">Plain text label</p>
+          <div class="copy-block">
+            <span id="out-label"></span>
+            <button class="copy-btn" id="copy-label-btn" aria-label="Copy plain text label to clipboard">Copy label</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section">
+      <h2>How to use this label</h2>
+      <div class="hairline-row">
+        <p><strong>On a webpage</strong> — paste the JSON-LD tab output into your HTML head. Invisible to readers, machine-readable by everything else.</p>
+      </div>
+      <div class="hairline-row">
+        <p><strong>On an image or video</strong> — add the XMP tab output to your file using ExifTool or any XMP-aware application.</p>
+      </div>
+      <div class="hairline-row">
+        <p><strong>In a C2PA manifest</strong> — include the C2PA tab output in your signing workflow. Share with your engineering team for platform integrations.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>What happens to your data</h2>
+      <p>Nothing. This generator runs entirely in your browser. No information is sent to any server. Made Mark does not collect, store, or transmit any data you enter here.</p>
+    </div>
+
+    <footer class="site-footer">
+      <p>Made Mark ™ · mademark.org</p>
+      <p>An open specification for content authorship disclosure.</p>
+      <p>Specification: CC0 · Name and logo: Trademarks of Daniel Richard Skrok</p>
+      <p>v1.0 — Published June 2026</p>
+      <p class="footer-mark"><a href="/marks/human-designed-ai-made/" class="mm-attribution"><img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" width="16" height="16" aria-hidden="true"> Human Designed, AI Made</a></p>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/company/mademark/" target="_blank" rel="noopener noreferrer" aria-label="Made Mark on LinkedIn (opens in new tab)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.712-2.165 1.193V6.169H6.249c.032.682 0 7.225 0 7.225h2.401z"/></svg> LinkedIn</a>
+        <a href="https://github.com/mademark" target="_blank" rel="noopener noreferrer" aria-label="Made Mark on GitHub (opens in new tab)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> GitHub</a>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+var selectedMark = null;
+var selectedName = null;
+
+var cards = document.querySelectorAll('.gen-card');
+var toolDetails = document.getElementById('tool-details');
+var placeholder = document.getElementById('gen-placeholder');
+var output = document.getElementById('gen-output');
+var modelInput = document.getElementById('gen-model');
+var providerInput = document.getElementById('gen-provider');
+var licenseInput = document.getElementById('gen-license');
+
+cards.forEach(function(card) {
+  card.addEventListener('click', function() {
+    cards.forEach(function(c) { c.classList.remove('selected'); c.setAttribute('aria-pressed', 'false'); });
+    card.classList.add('selected');
+    card.setAttribute('aria-pressed', 'true');
+    selectedMark = card.getAttribute('data-mark');
+    selectedName = card.getAttribute('data-name');
+
+    var status = document.getElementById('copy-status');
+    if (selectedMark === 'human-made') {
+      toolDetails.style.display = 'none';
+      modelInput.value = '';
+      providerInput.value = '';
+      licenseInput.value = '';
+      if (status) status.textContent = selectedName + ' selected. Your label is ready below.';
+    } else {
+      toolDetails.style.display = 'block';
+      if (status) status.textContent = selectedName + ' selected. Optional tool details and your label are below.';
+    }
+
+    placeholder.style.display = 'none';
+    output.style.display = 'block';
+    document.getElementById('gen-error').style.display = 'none';
+    updateOutputs();
+  });
+});
+
+[modelInput, providerInput, licenseInput].forEach(function(input) {
+  input.addEventListener('keyup', updateOutputs);
+  input.addEventListener('input', updateOutputs);
+});
+
+function updateOutputs() {
+  if (!selectedMark) return;
+
+  var slug = selectedMark;
+  var markUrl = 'https://mademark.org/marks/' + slug;
+  var model = modelInput.value.trim();
+  var provider = providerInput.value.trim();
+  var license = licenseInput.value.trim();
+
+  var obj = {
+    '@context': 'https://mademark.org/ns',
+    '@type': 'CreativeWork',
+    madeMark: { mark: markUrl }
+  };
+  if (model) obj.madeMark.model = model;
+  if (provider) obj.madeMark.provider = provider;
+  if (license) obj.madeMark.sourceLicense = license;
+
+  var jsonldStr = '<script type="application/ld+json">\n' +
+    JSON.stringify(obj, null, 2) +
+    '\n<\/script>';
+  document.getElementById('out-jsonld').textContent = jsonldStr;
+
+  var xmpLines = ['<rdf:Description rdf:about=""',
+    '  xmlns:mm="https://mademark.org/ns/">',
+    '  <mm:mark>' + markUrl + '</mm:mark>'];
+  if (model) xmpLines.push('  <mm:model>' + escXml(model) + '</mm:model>');
+  if (provider) xmpLines.push('  <mm:provider>' + escXml(provider) + '</mm:provider>');
+  if (license) xmpLines.push('  <mm:sourceLicense>' + escXml(license) + '</mm:sourceLicense>');
+  xmpLines.push('</rdf:Description>');
+  document.getElementById('out-xmp').textContent = xmpLines.join('\n');
+
+  var c2pa = {
+    label: 'mademark.org/marks/' + slug,
+    data: { '@context': 'https://mademark.org/ns', mark: markUrl }
+  };
+  if (model) c2pa.data.model = model;
+  if (provider) c2pa.data.provider = provider;
+  if (license) c2pa.data.sourceLicense = license;
+  document.getElementById('out-c2pa').textContent = JSON.stringify(c2pa, null, 2);
+
+  var markNames = {
+    'human-made': 'Human Made',
+    'human-designed-ai-made': 'Human Designed, AI Made',
+    'ai-made': 'AI Made'
+  };
+  var altName = markNames[slug] || selectedName;
+  var badge = '<a href="' + markUrl + '"\n   rel="license">\n' +
+    '  <img src="https://mademark.org/assets/svg/mm-icon-' + slug + '.svg"\n' +
+    '       alt="' + altName + ' — Made Mark"\n' +
+    '       width="40" height="40">\n</a>';
+  document.getElementById('out-badge').textContent = badge;
+
+  var parts = ['MM', selectedName];
+  if (model) parts.push(model);
+  if (provider) parts.push(provider);
+  if (license) parts.push(license);
+  var labelStr = parts.join(' · ');
+  document.getElementById('out-label').textContent = labelStr;
+
+  document.getElementById('copy-label-btn').onclick = function() {
+    copyText(this, labelStr);
+  };
+}
+
+function escXml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function switchTab(tab) {
+  var tabs = document.querySelectorAll('.gen-tab');
+  var panels = document.querySelectorAll('.gen-panel');
+  tabs.forEach(function(t) {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+    t.setAttribute('tabindex', '-1');
+  });
+  panels.forEach(function(p) { p.classList.remove('active'); });
+  tab.classList.add('active');
+  tab.setAttribute('aria-selected', 'true');
+  tab.setAttribute('tabindex', '0');
+  document.getElementById(tab.getAttribute('data-panel')).classList.add('active');
+  tab.focus();
+}
+
+document.getElementById('gen-tabs').addEventListener('click', function(e) {
+  var tab = e.target.closest('.gen-tab');
+  if (!tab) return;
+  switchTab(tab);
+});
+
+document.getElementById('gen-tabs').addEventListener('keydown', function(e) {
+  var tabs = Array.from(document.querySelectorAll('.gen-tab'));
+  var idx = tabs.indexOf(document.activeElement);
+  if (idx === -1) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); switchTab(tabs[(idx + 1) % tabs.length]); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); switchTab(tabs[(idx - 1 + tabs.length) % tabs.length]); }
+  else if (e.key === 'Home') { e.preventDefault(); switchTab(tabs[0]); }
+  else if (e.key === 'End') { e.preventDefault(); switchTab(tabs[tabs.length - 1]); }
+});
+
+function copyText(btn, text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() { flashCopied(btn); });
+  } else { fallbackCopy(text); flashCopied(btn); }
+}
+function copyCode(btn) {
+  if (!selectedMark) {
+    document.getElementById('gen-error').style.display = 'block';
+    return;
+  }
+  var pre = btn.parentElement.querySelector('pre');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(pre.textContent).then(function() { flashCopied(btn); });
+  } else { fallbackCopy(pre.textContent); flashCopied(btn); }
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+  document.body.removeChild(ta);
+}
+function flashCopied(btn) {
+  var orig = btn.textContent; btn.textContent = 'Copied'; var _s = document.getElementById('copy-status'); if (_s) _s.textContent = 'Copied to clipboard';
+  setTimeout(function() { btn.textContent = orig; var _s = document.getElementById('copy-status'); if (_s) _s.textContent = ''; }, 2000);
+}
+
+(function() {
+  var hamburger = document.querySelector('.hamburger');
+  var nav = document.getElementById('mobile-nav');
+  function openMenu() {
+    nav.classList.add('open'); hamburger.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', 'Close navigation menu');
+    nav.querySelector('a').focus();
+  }
+  function closeMenu() {
+    nav.classList.remove('open'); hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Open navigation menu');
+  }
+  hamburger.addEventListener('click', function() {
+    nav.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  nav.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+  document.addEventListener('keydown', function(e) {
+    if (!nav.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeMenu(); hamburger.focus(); return; }
+    if (e.key === 'Tab') {
+      var els = [hamburger].concat(Array.from(nav.querySelectorAll('a')));
+      var first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+})();
+</script>
+
+<div class="copy-status" aria-live="polite" id="copy-status"></div>
+</body>
+</html>

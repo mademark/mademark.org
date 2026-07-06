@@ -1,0 +1,7 @@
+{
+  "@context": "https://mademark.org/ns",
+  "@id": "https://mademark.org/marks/ai-made",
+  "@type": "mm:AuthorshipMark",
+  "mm:name": "AI Made",
+  "mm:description": "Conceived and produced primarily by AI."
+}

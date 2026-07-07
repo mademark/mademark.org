@@ -810,12 +810,14 @@ a.mark-card:active {
   transition: background 0.15s, border-color 0.15s;
 }
 
-.choice-card:hover {
+/* Hover/active only on link cards — planned-format cards are plain divs
+   and must not invite clicks. */
+a.choice-card:hover {
   background: var(--bg);
   border-color: var(--ink);
 }
 
-.choice-card:active {
+a.choice-card:active {
   border-color: var(--accent);
 }
 
@@ -847,6 +849,11 @@ a.mark-card:active {
   background: var(--accent);
   border-radius: 50%;
   flex-shrink: 0;
+}
+
+/* Grey dot for statuses that shouldn't draw the eye (Planned). */
+.choice-badge-muted::before {
+  background: var(--subtle);
 }
 
 .choice-title {
@@ -888,7 +895,7 @@ a.mark-card:active {
   min-height: 44px;
 }
 
-.choice-card:hover .choice-cta {
+a.choice-card:hover .choice-cta {
   /* #D42B20 on --bg ≈ 4.71:1 — AA ✓ */
   border-color: var(--accent-ink);
   color: var(--accent-ink);
@@ -902,7 +909,7 @@ a.mark-card:active {
   color: var(--white);
 }
 
-.choice-card:hover .choice-cta-primary {
+a.choice-card:hover .choice-cta-primary {
   background: var(--black);
   border-color: var(--accent);
   color: var(--white);

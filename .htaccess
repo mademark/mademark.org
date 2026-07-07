@@ -41,6 +41,10 @@ DirectoryIndex index.html
   Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
 
+# Moved pages (v2.0 audience IA, July 2026)
+RedirectMatch 301 ^/use-made-mark(/.*)?$ /label/
+RedirectMatch 301 ^/for-ai-users(/.*)?$ /use-with-ai/
+
 # Redirect www to non-www
 <IfModule mod_rewrite.c>
   RewriteEngine On

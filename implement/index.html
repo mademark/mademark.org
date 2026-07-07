@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Implement Made Mark | Made Mark</title>
+  <meta name="description" content="Everything developers and platforms need to emit, embed, or display Made Mark labels: JSON-LD, XMP, and C2PA schemas, stable URIs, badge assets, and integration guidance.">
+  <link rel="canonical" href="https://mademark.org/implement/">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Implement Made Mark | Made Mark">
+  <meta property="og:description" content="JSON-LD, XMP, and C2PA schemas, stable URIs, badge assets, and integration guidance for developers and platforms.">
+  <meta property="og:url" content="https://mademark.org/implement/">
+  <meta property="og:image" content="https://mademark.org/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Implement Made Mark | Made Mark">
+  <meta name="twitter:description" content="Schemas, stable URIs, and assets for developers and platforms.">
+  <meta name="twitter:image" content="https://mademark.org/assets/og-image.png">
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="/" class="logo-link">
+      <img src="/assets/svg/mm-logo-dark.svg" alt="Made Mark" class="logo">
+    </a>
+    <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Main navigation">
+  <a href="/">Overview</a>
+  <a href="/marks/">The three marks</a>
+  <a href="/label/">Label your work</a>
+  <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
+  <a href="/generate/" class="nav-sub">Generate a label</a>
+  <a href="/implement/" class="active">Implement</a>
+  <a href="/downloads/" class="nav-sub">Downloads</a>
+  <a href="/about/">About</a>
+  <a href="/governance/" class="nav-sub">Governance</a>
+  <a href="/colophon/" class="nav-sub">Colophon</a>
+</nav>
+
+<div class="page-layout">
+  <nav class="sidebar-nav" aria-label="Main navigation">
+    <a href="/">Overview</a>
+    <a href="/marks/">The three marks</a>
+    <a href="/label/">Label your work</a>
+    <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
+    <a href="/generate/" class="nav-sub">Generate a label</a>
+    <a href="/implement/" class="active">Implement</a>
+    <a href="/downloads/" class="nav-sub">Downloads</a>
+    <a href="/about/">About</a>
+    <a href="/governance/" class="nav-sub">Governance</a>
+    <a href="/colophon/" class="nav-sub">Colophon</a>
+  </nav>
+
+  <main class="content" id="main-content" role="main">
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <span aria-current="page">Implement</span>
+    </nav>
+
+    <div class="section">
+      <div class="status-badge">Specification v1.0 — stable</div>
+      <h1>Implement Made Mark</h1>
+      <p>Everything a developer or platform needs to emit, embed, or display Made Mark labels. The specification is CC0 — no account, registration, or permission required.</p>
+    </div>
+
+    <div class="section">
+      <h2>The three layers</h2>
+      <p>Made Mark is built like a CC license. Implement whichever layers fit your surface — the machine-readable expression is what makes labels interoperable.</p>
+      <div class="numbered-row">
+        <span class="numbered-circle">1</span>
+        <div>
+          <p><strong>Visual mark</strong></p>
+          <p>A badge anyone recognizes at a glance. SVG and PNG in the <a href="/downloads/" class="text-link">asset pack</a>.</p>
+        </div>
+      </div>
+      <div class="numbered-row">
+        <span class="numbered-circle">2</span>
+        <div>
+          <p><strong>Plain-language label</strong></p>
+          <p>MM · Human Designed, AI Made · Claude Sonnet 4.6 · Anthropic — the mark is required, all other fields optional.</p>
+        </div>
+      </div>
+      <div class="numbered-row">
+        <span class="numbered-circle">3</span>
+        <div>
+          <p><strong>Machine-readable expression</strong></p>
+          <p>Stable URIs plus structured metadata, in the formats below.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="json-ld">
+      <h2>JSON-LD (web pages)</h2>
+      <p>For web content, add a JSON-LD block to your HTML head. It is invisible to readers and machine-readable by search engines, metadata tools, and any software that follows linked data conventions.</p>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy JSON-LD example"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button>
+        <pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://mademark.org/ns",
+  "@type": "CreativeWork",
+  "madeMark": {
+    "mark": "https://mademark.org/marks/human-designed-ai-made",
+    "model": "Claude Sonnet 4.6",
+    "provider": "Anthropic",
+    "sourceLicense": "CC BY 4.0"
+  }
+}
+&lt;/script&gt;</pre>
+      </div>
+    </div>
+
+    <div class="section" id="xmp">
+      <h2>XMP (images and media)</h2>
+      <p>For image, video, and audio files, Made Mark embeds in the XMP metadata block inside the file itself. XMP travels with the content when the file is downloaded or shared. Write XMP fields with ExifTool or any XMP-aware tool or library.</p>
+      <p>Note that some platforms strip XMP on upload. This is a platform behavior, not a Made Mark limitation.</p>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy XMP example"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button>
+        <pre>&lt;rdf:Description rdf:about=""
+  xmlns:mm="https://mademark.org/ns/"&gt;
+  &lt;mm:mark&gt;https://mademark.org/marks/human-designed-ai-made&lt;/mm:mark&gt;
+  &lt;mm:model&gt;Claude Sonnet 4.6&lt;/mm:model&gt;
+  &lt;mm:provider&gt;Anthropic&lt;/mm:provider&gt;
+  &lt;mm:sourceLicense&gt;CC BY 4.0&lt;/mm:sourceLicense&gt;
+&lt;/rdf:Description&gt;</pre>
+      </div>
+    </div>
+
+    <div class="section" id="c2pa">
+      <h2>C2PA assertion (signed media)</h2>
+      <p>C2PA is the most robust implementation path for media files. It creates a cryptographically signed manifest that travels with the file. If anyone modifies the file after signing, the signature breaks and tools can detect it. Made Mark expresses as a custom assertion inside a C2PA manifest.</p>
+      <p>C2PA is an open standard. No account or registration is required to implement it. AI image generators, camera manufacturers, and publishing platforms that already support C2PA can add a Made Mark assertion to their existing signing workflow.</p>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy C2PA assertion example"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button>
+        <pre>{
+  "label": "https://mademark.org/marks/human-designed-ai-made",
+  "data": {
+    "@context": "https://mademark.org/ns",
+    "mark": "https://mademark.org/marks/human-designed-ai-made",
+    "model": "Claude Sonnet 4.6",
+    "provider": "Anthropic",
+    "sourceLicense": "CC BY 4.0"
+  }
+}</pre>
+      </div>
+      <div class="callout-box">
+        <p>Made Mark rides inside C2PA's manifest as the human-readable semantic layer, so it travels with provenance instead of competing with it. C2PA answers "is this file untampered and where did it come from" — Made Mark answers "who, or what, made it."</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Stable URIs</h2>
+      <p>Every mark resolves to a canonical URI with a machine-readable JSON document alongside the human-readable page. These URIs are contracts — they will not change or disappear.</p>
+      <div class="field-rows">
+        <div class="field-row">
+          <span class="inline-code">mademark.org/marks/human-made</span>
+          <span class="field-row-role">+ /index.json</span>
+        </div>
+        <div class="field-row">
+          <span class="inline-code">mademark.org/marks/human-designed-ai-made</span>
+          <span class="field-row-role">+ /index.json</span>
+        </div>
+        <div class="field-row">
+          <span class="inline-code">mademark.org/marks/ai-made</span>
+          <span class="field-row-role">+ /index.json</span>
+        </div>
+        <div class="field-row">
+          <span class="inline-code">mademark.org/ns</span>
+          <span class="field-row-role">JSON-LD context</span>
+        </div>
+      </div>
+      <p class="caption" style="margin-top: 16px;">The vocabulary, label syntax, and URI structure are frozen at v1.0. Changes are governed by the <a href="/governance/" class="text-link">governance policy</a> and will never break existing implementations.</p>
+    </div>
+
+    <div class="section">
+      <h2>Badges and assets</h2>
+      <p>Mark icons in SVG and PNG at every size, logo files, and embed snippets — free to use unmodified to identify Made Mark authorship (CC BY-ND 4.0).</p>
+      <p style="margin-top: 24px;"><a href="/downloads/" class="download-btn">Browse assets <span aria-hidden="true">→</span></a></p>
+    </div>
+
+    <div class="section">
+      <h2>Add Made Mark to your product</h2>
+      <p>If you build an AI tool, a publishing platform, or a CMS: emitting a Made Mark label is one string appended to output, and one metadata block alongside it. Your users get authorship disclosure by default; you get to say your platform supports an open attribution standard.</p>
+      <p>A label validator and platform plugins are planned. If you are implementing Made Mark and want to talk it through — or want your implementation listed here — write to <a href="mailto:hello@mademark.org" class="text-link">hello@mademark.org</a>.</p>
+    </div>
+
+    <footer class="site-footer">
+      <p>Made Mark ™ · mademark.org</p>
+      <p>An open specification for content authorship disclosure.</p>
+      <p>Specification: CC0 · Name and logo: Trademarks of Daniel Richard Skrok</p>
+      <p>v1.0 — Published June 2026</p>
+      <p class="footer-mark"><a href="/marks/human-designed-ai-made/" class="mm-attribution"><img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" width="16" height="16" aria-hidden="true"> Human Designed, AI Made</a></p>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/company/mademark/" target="_blank" rel="noopener noreferrer" aria-label="Made Mark on LinkedIn (opens in new tab)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.712-2.165 1.193V6.169H6.249c.032.682 0 7.225 0 7.225h2.401z"/></svg> LinkedIn</a>
+        <a href="https://github.com/mademark" target="_blank" rel="noopener noreferrer" aria-label="Made Mark on GitHub (opens in new tab)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> GitHub</a>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+function copyCode(btn) {
+  var pre = btn.parentElement.querySelector('pre');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(pre.textContent).then(function() { flashCopied(btn); });
+  } else { fallbackCopy(pre.textContent); flashCopied(btn); }
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+  document.body.removeChild(ta);
+}
+function flashCopied(btn) {
+  var label = btn.querySelector('span') || btn;
+  var orig = label.textContent; label.textContent = 'Copied'; btn.classList.add('copied'); var _s = document.getElementById('copy-status'); if (_s) _s.textContent = 'Copied to clipboard';
+  setTimeout(function() { label.textContent = orig; btn.classList.remove('copied'); var _s = document.getElementById('copy-status'); if (_s) _s.textContent = ''; }, 2000);
+}
+(function() {
+  var hamburger = document.querySelector('.hamburger');
+  var nav = document.getElementById('mobile-nav');
+  function openMenu() {
+    nav.classList.add('open'); hamburger.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', 'Close navigation menu');
+    nav.querySelector('a').focus();
+  }
+  function closeMenu() {
+    nav.classList.remove('open'); hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Open navigation menu');
+  }
+  hamburger.addEventListener('click', function() {
+    nav.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  nav.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+  document.addEventListener('keydown', function(e) {
+    if (!nav.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeMenu(); hamburger.focus(); return; }
+    if (e.key === 'Tab') {
+      var els = [hamburger].concat(Array.from(nav.querySelectorAll('a')));
+      var first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+})();
+</script>
+
+<div class="copy-status" aria-live="polite" id="copy-status"></div>
+</body>
+</html>

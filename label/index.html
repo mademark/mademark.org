@@ -3,21 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Colophon | Made Mark</title>
-  <meta name="description" content="How Made Mark was made — authorship disclosure for this site and specification.">
-  <link rel="canonical" href="https://mademark.org/colophon/">
+  <title>Label your work | Made Mark</title>
+  <meta name="description" content="Add a Made Mark authorship label to anything you make — text, websites, images, video, audio. Automatic via your AI tool, or manual via the generator.">
+  <link rel="canonical" href="https://mademark.org/label/">
   <link rel="stylesheet" href="/style.css">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Colophon | Made Mark">
-  <meta property="og:description" content="How Made Mark was made — authorship disclosure for this site and specification.">
-  <meta property="og:url" content="https://mademark.org/colophon/">
+  <meta property="og:title" content="Label your work | Made Mark">
+  <meta property="og:description" content="Add a Made Mark authorship label to anything you make. Automatic via your AI tool, or manual via the generator.">
+  <meta property="og:url" content="https://mademark.org/label/">
   <meta property="og:image" content="https://mademark.org/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Colophon | Made Mark">
-  <meta name="twitter:description" content="How Made Mark was made — authorship disclosure for this site and specification.">
+  <meta name="twitter:title" content="Label your work | Made Mark">
+  <meta name="twitter:description" content="Pick your path, then your format. Every method produces the same label.">
   <meta name="twitter:image" content="https://mademark.org/assets/og-image.png">
 </head>
 <body>
@@ -38,28 +40,28 @@
 <nav class="mobile-nav" id="mobile-nav" aria-label="Main navigation">
   <a href="/">Overview</a>
   <a href="/marks/">The three marks</a>
-  <a href="/label/">Label your work</a>
+  <a href="/label/" class="active">Label your work</a>
   <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
   <a href="/generate/" class="nav-sub">Generate a label</a>
   <a href="/implement/">Implement</a>
   <a href="/downloads/" class="nav-sub">Downloads</a>
   <a href="/about/">About</a>
   <a href="/governance/" class="nav-sub">Governance</a>
-  <a href="/colophon/" class="nav-sub active">Colophon</a>
+  <a href="/colophon/" class="nav-sub">Colophon</a>
 </nav>
 
 <div class="page-layout">
   <nav class="sidebar-nav" aria-label="Main navigation">
     <a href="/">Overview</a>
     <a href="/marks/">The three marks</a>
-    <a href="/label/">Label your work</a>
+    <a href="/label/" class="active">Label your work</a>
     <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
     <a href="/generate/" class="nav-sub">Generate a label</a>
     <a href="/implement/">Implement</a>
     <a href="/downloads/" class="nav-sub">Downloads</a>
     <a href="/about/">About</a>
     <a href="/governance/" class="nav-sub">Governance</a>
-    <a href="/colophon/" class="nav-sub active">Colophon</a>
+    <a href="/colophon/" class="nav-sub">Colophon</a>
   </nav>
 
   <main class="content" id="main-content" role="main">
@@ -67,70 +69,90 @@
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Home</a>
       <span class="sep" aria-hidden="true">›</span>
-      <a href="/about/">About</a>
-      <span class="sep" aria-hidden="true">›</span>
-      <span aria-current="page">Colophon</span>
+      <span aria-current="page">Label your work</span>
     </nav>
 
     <div class="section">
-      <h1>Colophon</h1>
-      <p>Made Mark is a framework for honest authorship disclosure. This page applies that framework to itself.</p>
+      <h1>Label your work</h1>
+      <p>Pick your path, then your format. Every method produces the same label.</p>
 
-      <div class="colophon-row" style="margin-top: 32px;">
-        <div class="colophon-badge">
-          <a href="/marks/human-made/" class="mm-attribution">
-            <img src="/assets/svg/mm-icon-human-made.svg" alt="" aria-hidden="true" width="24" height="24">
-            Human Made
-          </a>
+      <div class="choice-grid">
+
+        <a class="choice-card choice-card-primary" href="/use-with-ai/">
+          <span class="choice-badge">Recommended</span>
+          <span class="choice-title">Set it once, works forever</span>
+          <p class="choice-desc">Configure your AI tool to append a Made Mark label to everything it produces. Takes two minutes. Never think about it again.</p>
+          <span class="choice-meta">Claude · ChatGPT · Copilot · Gemini</span>
+          <span class="choice-cta choice-cta-primary">Use with AI <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a class="choice-card" href="/generate/">
+          <span class="choice-title">Add it manually</span>
+          <p class="choice-desc">Generate a label for a single piece of content — something already created, or work made without AI tools.</p>
+          <span class="choice-meta">Web · image · C2PA · badge output</span>
+          <span class="choice-cta">Generate a label <span aria-hidden="true">→</span></span>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>By format</h2>
+      <p>Made Mark is designed to travel with every kind of generative output. Formats roll out in phases — what each one supports today:</p>
+
+      <!--
+        FORMAT GRID — how to promote a format
+        ──────────────────────────────────────
+        Available formats are <a class="choice-card"> linking to their tool
+        or guide, with the red-dot "Available now" badge. Planned formats
+        are plain <div class="choice-card"> (not clickable) with the
+        grey-dot "Planned" badge. When a format's tool ships: change the
+        div to a link, point it at the tool, swap the badge class.
+      -->
+      <div class="choice-grid">
+
+        <a class="choice-card" href="/use-with-ai/">
+          <span class="choice-badge">Available now</span>
+          <span class="choice-title">Text</span>
+          <p class="choice-desc">Configure your AI to append the label automatically, or paste a generated label at the end of the document.</p>
+          <span class="choice-cta">Set up <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a class="choice-card" href="/generate/">
+          <span class="choice-badge">Available now</span>
+          <span class="choice-title">Websites</span>
+          <p class="choice-desc">Add JSON-LD to your page head and a badge to your footer. The generator outputs both, ready to paste.</p>
+          <span class="choice-cta">Generate <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a class="choice-card" href="/implement/#xmp">
+          <span class="choice-badge">Guide available</span>
+          <span class="choice-title">Images</span>
+          <p class="choice-desc">Embed the label in the file's XMP metadata and show the badge in a corner or caption. A one-click injection tool is coming.</p>
+          <span class="choice-cta">XMP guide <span aria-hidden="true">→</span></span>
+        </a>
+
+        <div class="choice-card">
+          <span class="choice-badge choice-badge-muted">Planned</span>
+          <span class="choice-title">Video</span>
+          <p class="choice-desc">End-card templates plus embedded metadata. Until then: show the mark on your end card and put the label in the description.</p>
         </div>
-        <div class="colophon-content">
-          <strong>Concept, strategy, and brand</strong>
-          <p>Daniel Skrok — the three-mark framework, CC companion positioning, hallmark lineage, specification structure, trademark strategy, and the Made Mark name and icon set.</p>
+
+        <div class="choice-card">
+          <span class="choice-badge choice-badge-muted">Planned</span>
+          <span class="choice-title">Audio</span>
+          <p class="choice-desc">Label in the file's tags and metadata. Until then: put the label in your episode notes or track description.</p>
         </div>
+
+        <div class="choice-card">
+          <span class="choice-badge choice-badge-muted">Planned</span>
+          <span class="choice-title">Physical goods</span>
+          <p class="choice-desc">Authorship marking for industrial design, products, and engineering — the hallmark returning to objects.</p>
+        </div>
+
       </div>
 
-      <div class="colophon-row">
-        <div class="colophon-badge">
-          <a href="/marks/human-made/" class="mm-attribution">
-            <img src="/assets/svg/mm-icon-human-made.svg" alt="" aria-hidden="true" width="24" height="24">
-            Human Made
-          </a>
-        </div>
-        <div class="colophon-content">
-          <strong>Icons and logo</strong>
-          <p>Daniel Skrok — the [m] wordmark and three authorship mark icons, designed and exported as the Made Mark visual identity.</p>
-        </div>
-      </div>
-
-      <div class="colophon-row">
-        <div class="colophon-badge">
-          <a href="/marks/human-designed-ai-made/" class="mm-attribution">
-            <img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" aria-hidden="true" width="24" height="24">
-            Human Designed, AI Made
-          </a>
-        </div>
-        <div class="colophon-content">
-          <strong>Website design and development</strong>
-          <p>Claude Sonnet and Claude Code, Anthropic — content development, HTML, CSS, and site build, directed by Daniel Skrok.</p>
-        </div>
-      </div>
-
-      <div class="colophon-row">
-        <div class="colophon-badge">
-          <a href="/marks/human-designed-ai-made/" class="mm-attribution">
-            <img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" aria-hidden="true" width="24" height="24">
-            Human Designed, AI Made
-          </a>
-        </div>
-        <div class="colophon-content">
-          <strong>Governance policy</strong>
-          <p>Alice 2.0, Curiouser AI — governance and misuse policy, drafted from Daniel Skrok's direction and constraints.</p>
-        </div>
-      </div>
-
-      <div class="callout-box" style="margin-top: 32px;">
-        <p>The label this site wears is the label it describes.</p>
-      </div>
+      <p class="caption" style="margin-top: 24px;">Not sure which mark applies to your work? <a href="/marks/" class="text-link">The three marks</a> explains each one, with examples.</p>
     </div>
 
     <footer class="site-footer">
@@ -179,6 +201,6 @@
   });
 })();
 </script>
-<div class="copy-status" aria-live="polite" id="copy-status"></div>
+
 </body>
 </html>

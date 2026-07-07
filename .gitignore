@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# Version archives — tracked via git tags instead; zips kept locally in _releases/
+_releases/
+
+# Local-only Claude Code settings
+.claude/settings.local.json

@@ -1,0 +1,7 @@
+{
+  "@context": "https://mademark.org/ns",
+  "@id": "https://mademark.org/marks/human-designed-ai-made",
+  "@type": "mm:AuthorshipMark",
+  "mm:name": "Human Designed, AI Made",
+  "mm:description": "Human creative direction, AI production."
+}

@@ -1,0 +1,14 @@
+{
+  "@context": {
+    "mm": "https://mademark.org/ns#",
+    "schema": "https://schema.org/",
+    "dc": "http://purl.org/dc/terms/",
+    "mm:mark": { "@type": "@id" },
+    "mm:AuthorshipMark": "mm:AuthorshipMark",
+    "mm:name": "schema:name",
+    "mm:description": "schema:description",
+    "mm:humanMade": "https://mademark.org/marks/human-made",
+    "mm:humanDesignedAIMade": "https://mademark.org/marks/human-designed-ai-made",
+    "mm:aiMade": "https://mademark.org/marks/ai-made"
+  }
+}

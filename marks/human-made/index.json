@@ -1,0 +1,7 @@
+{
+  "@context": "https://mademark.org/ns",
+  "@id": "https://mademark.org/marks/human-made",
+  "@type": "mm:AuthorshipMark",
+  "mm:name": "Human Made",
+  "mm:description": "Conceived and produced by people."
+}

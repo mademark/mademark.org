@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mademark.org/sitemap.xml

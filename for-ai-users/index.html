@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Make Your AI Transparent | Made Mark</title>
+  <meta name="description" content="Configure Claude, ChatGPT, Copilot, or Gemini with custom instructions that automatically append Made Mark attribution to AI-generated content.">
+  <link rel="canonical" href="https://mademark.org/for-ai-users/">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Make Your AI Transparent | Made Mark">
+  <meta property="og:description" content="Configure Claude, ChatGPT, Copilot, or Gemini to automatically append Made Mark attribution.">
+  <meta property="og:url" content="https://mademark.org/for-ai-users/">
+  <meta property="og:image" content="https://mademark.org/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Make Your AI Transparent | Made Mark">
+  <meta name="twitter:description" content="Custom instructions that make your AI label its own work.">
+  <meta name="twitter:image" content="https://mademark.org/assets/og-image.png">
+  <style>
+    /* Page-scoped additions not covered by /style.css — kept minimal, uses existing tokens. */
+    .example-box {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px 20px;
+      background: var(--bg);
+      margin-top: 12px;
+      font-size: 15px;
+      color: var(--ink);
+    }
+    .example-box .mark-line {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line);
+      font-family: 'Source Code Pro', monospace;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .paste-path {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .paste-path code {
+      font-family: 'Source Code Pro', monospace;
+      background: var(--bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--line);
+      padding: 16px 0;
+    }
+    .faq-item summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--black);
+      font-size: 16px;
+      list-style: none;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::before {
+      content: '+';
+      display: inline-block;
+      width: 20px;
+      color: var(--accent-ink);
+      font-weight: 700;
+    }
+    .faq-item[open] summary::before { content: '−'; }
+    .faq-item summary:focus-visible {
+      outline: 2px solid var(--accent-ink);
+      outline-offset: 2px;
+    }
+    .faq-answer {
+      margin-top: 8px;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="/" class="logo-link">
+      <img src="/assets/svg/mm-logo-dark.svg" alt="Made Mark" class="logo">
+    </a>
+    <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Main navigation">
+  <a href="/">Overview</a>
+  <a href="/marks/">The three marks</a>
+  <a href="/use-made-mark/">Use Made Mark</a>
+  <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
+  <a href="/generate/" class="nav-sub">Generate a label</a>
+  <a href="/governance/">Governance</a>
+  <a href="/downloads/">Downloads</a>
+  <a href="/colophon/">Colophon</a>
+</nav>
+
+<div class="page-layout">
+  <nav class="sidebar-nav" aria-label="Main navigation">
+    <a href="/">Overview</a>
+    <a href="/marks/">The three marks</a>
+    <a href="/use-made-mark/">Use Made Mark</a>
+    <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
+    <a href="/generate/" class="nav-sub">Generate a label</a>
+    <a href="/governance/">Governance</a>
+    <a href="/downloads/">Downloads</a>
+    <a href="/colophon/">Colophon</a>
+  </nav>
+
+  <main class="content" id="main-content" role="main">
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <span aria-current="page">For AI users</span>
+    </nav>
+
+    <div class="section">
+      <h1>Make Your AI Transparent</h1>
+      <p style="font-size: 18px; color: var(--muted);">Set up your AI to automatically label generated content with Made Mark — takes 2 minutes, works forever.</p>
+      <p>Custom instructions are a standing note your AI reads before every response. Paste one of the blocks below into your platform's settings once, and it will keep appending a Made Mark attribution to publishable work — articles, posts, emails, reports — without you asking again. This page exists because authorship transparency should be the default, not something you remember to do by hand each time.</p>
+    </div>
+
+    <div class="section">
+      <div class="mark-tabs" id="platform-tabs" role="tablist" aria-label="AI platform">
+        <button type="button" class="mark-tab active" role="tab" aria-selected="true" aria-controls="panel-claude" id="tab-claude" tabindex="0" data-panel="panel-claude">Claude</button>
+        <button type="button" class="mark-tab" role="tab" aria-selected="false" aria-controls="panel-chatgpt" id="tab-chatgpt" tabindex="-1" data-panel="panel-chatgpt">ChatGPT</button>
+        <button type="button" class="mark-tab" role="tab" aria-selected="false" aria-controls="panel-copilot" id="tab-copilot" tabindex="-1" data-panel="panel-copilot">Copilot</button>
+        <button type="button" class="mark-tab" role="tab" aria-selected="false" aria-controls="panel-gemini" id="tab-gemini" tabindex="-1" data-panel="panel-gemini">Gemini</button>
+        <button type="button" class="mark-tab" role="tab" aria-selected="false" aria-controls="panel-universal" id="tab-universal" tabindex="-1" data-panel="panel-universal">Universal</button>
+      </div>
+
+      <!-- Claude -->
+      <div class="platform-panel" id="panel-claude" role="tabpanel" aria-labelledby="tab-claude">
+        <h2>Claude (Anthropic)</h2>
+        <p class="paste-path">Where this goes: <code>claude.ai</code> → Settings → Profile → Custom instructions.</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy Claude custom instructions"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button>
+          <pre>When generating written content (articles, blog posts, social media
+posts, emails, reports, or any publishable text), automatically append
+this attribution at the end of your response:
+
+🤖 AI Made
+This content was primarily conceived and produced by Claude (Anthropic)
+Made with AI: https://mademark.org/ai-made
+
+If the user provided significant creative direction, shaping the
+content's intent while I produced it, use this instead:
+
+👤🤖 Human Designed, AI Made
+This content was creatively directed by [Author Name] and produced by
+Claude (Anthropic)
+Made with AI: https://mademark.org/human-designed-ai-made
+
+Use your judgment based on the level of creative direction. When in
+doubt, use "Human Designed, AI Made."
+
+Do not add attribution to: conversational responses, code snippets,
+data analysis, or answers to questions. Only add attribution to content
+intended for publication or sharing.</pre>
+        </div>
+        <h3 style="margin-top: 24px; font-size: 16px;">What to expect</h3>
+        <div class="example-box">
+          <p>[Example LinkedIn post about AI transparency in content creation]</p>
+          <p class="mark-line">🤖 AI Made<br>This content was primarily conceived and produced by Claude (Anthropic)<br>Made with AI: https://mademark.org/ai-made</p>
+        </div>
+      </div>
+
+      <!-- ChatGPT -->
+      <div class="platform-panel" id="panel-chatgpt" role="tabpanel" aria-labelledby="tab-chatgpt" hidden>
+        <h2>ChatGPT (OpenAI)</h2>
+        <p class="paste-path">Where this goes: <code>chatgpt.com</code> → Settings → Personalization → Custom instructions.</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy ChatGPT custom instructions"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button>
+          <pre>When generating written content for publication (articles, posts,
+emails, reports, newsletters), automatically append this at the end:
+
+🤖 AI Made
+This content was primarily conceived and produced by ChatGPT (OpenAI)
+Made with AI: https://mademark.org/ai-made
+
+If I provided significant creative direction while you produced it,
+use:
+
+👤🤖 Human Designed, AI Made
+This content was creatively directed by [My Name] and produced by
+ChatGPT (OpenAI)
+Made with AI: https://mademark.org/human-designed-ai-made
+
+Only add attribution to content meant for publication. Don't add to:
+casual conversation, code, analysis, or Q&A responses.</pre>
+        </div>
+        <h3 style="margin-top: 24px; font-size: 16px;">What to expect</h3>
+        <div class="example-box">
+          <p>[Example newsletter draft where you gave an outline and key points, ChatGPT wrote the prose]</p>
+          <p class="mark-line">👤🤖 Human Designed, AI Made<br>This content was creatively directed by Daniel Skrok and produced by ChatGPT (OpenAI)<br>Made with AI: https://mademark.org/human-designed-ai-made</p>
+        </div>
+      </div>
+
+      <!-- Copilot -->
+      <div class="platform-panel" id="panel-copilot" role="tabpanel" aria-labelledby="tab-copilot" hidden>
+        <h2>Microsoft Copilot</h2>
+        <p class="paste-path">Where this goes: Copilot → Settings → Personalize Copilot → Custom instructions.</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy Copilot custom instructions"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button>
+          <pre>When generating written content for publication or sharing (articles,
+social posts, emails, reports), automatically add this attribution at
+the end:
+
+🤖 AI Made
+This content was primarily conceived and produced by Microsoft Copilot
+Made with AI: https://mademark.org/ai-made
+
+For content where the user provided creative direction while I
+produced it, use:
+
+👤🤖 Human Designed, AI Made
+This content was creatively directed by [Author Name] and produced by
+Microsoft Copilot
+Made with AI: https://mademark.org/human-designed-ai-made
+
+Apply attribution only to publishable content, not to conversational
+responses or code.</pre>
+        </div>
+        <h3 style="margin-top: 24px; font-size: 16px;">What to expect</h3>
+        <div class="example-box">
+          <p>[Example blog post drafted end-to-end by Copilot with no outline given]</p>
+          <p class="mark-line">🤖 AI Made<br>This content was primarily conceived and produced by Microsoft Copilot<br>Made with AI: https://mademark.org/ai-made</p>
+        </div>
+      </div>
+
+      <!-- Gemini -->
+      <div class="platform-panel" id="panel-gemini" role="tabpanel" aria-labelledby="tab-gemini" hidden>
+        <h2>Gemini (Google)</h2>
+        <p class="paste-path">Where this goes: Gemini → gear icon → Saved info (or a Gem's system instructions).</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy Gemini custom instructions"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button>
+          <pre>When creating written content for publication (articles, posts, emails,
+reports), automatically include this attribution:
+
+🤖 AI Made
+This content was primarily conceived and produced by Gemini (Google)
+Made with AI: https://mademark.org/ai-made
+
+For content where the user provided creative direction while I
+produced it, use:
+
+👤🤖 Human Designed, AI Made
+This content was creatively directed by [My Name] and produced by
+Gemini (Google)
+Made with AI: https://mademark.org/human-designed-ai-made
+
+Only apply to publishable content, not conversational answers or code.</pre>
+        </div>
+        <h3 style="margin-top: 24px; font-size: 16px;">What to expect</h3>
+        <div class="example-box">
+          <p>[Example report summary generated from your bullet points]</p>
+          <p class="mark-line">👤🤖 Human Designed, AI Made<br>This content was creatively directed by Daniel Skrok and produced by Gemini (Google)<br>Made with AI: https://mademark.org/human-designed-ai-made</p>
+        </div>
+      </div>
+
+      <!-- Universal -->
+      <div class="platform-panel" id="panel-universal" role="tabpanel" aria-labelledby="tab-universal" hidden>
+        <h2>Universal (any platform)</h2>
+        <p class="paste-path">Where this goes: any AI tool's custom instructions, system prompt, or memory field.</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy universal custom instructions"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button>
+          <pre>When generating written content for publication (articles, posts,
+emails, reports), automatically append this attribution:
+
+🤖 AI Made
+This content was primarily conceived and produced with AI
+Made with AI: https://mademark.org/ai-made
+
+For content where the user provided creative direction while AI
+produced it, use:
+
+👤🤖 Human Designed, AI Made
+This content was creatively directed by [Author Name] and produced
+with AI
+Made with AI: https://mademark.org/human-designed-ai-made
+
+Apply only to publishable content, not to conversational responses or
+code.</pre>
+        </div>
+        <h3 style="margin-top: 24px; font-size: 16px;">What to expect</h3>
+        <div class="example-box">
+          <p>[Example social post generated on a platform without native custom-instruction support, using a pasted system prompt]</p>
+          <p class="mark-line">🤖 AI Made<br>This content was primarily conceived and produced with AI<br>Made with AI: https://mademark.org/ai-made</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section">
+      <h2>Frequently asked questions</h2>
+
+      <details class="faq-item">
+        <summary>Will this add attribution to everything I ask my AI?</summary>
+        <p class="faq-answer">No. Only to content intended for publication (articles, posts, reports). Not to conversational responses, code, or data analysis.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>What's the difference between "AI Made" and "Human Designed, AI Made"?</summary>
+        <p class="faq-answer">"AI Made" means AI conceived and produced the content with no creative direction. "Human Designed, AI Made" means you shaped the creative intent and direction while AI executed the production. If you're guiding what to say, use the latter.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can I customize the attribution text?</summary>
+        <p class="faq-answer">Yes. You can edit [Author Name] to your actual name, or modify any part of the instruction to fit your needs.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can I turn this off?</summary>
+        <p class="faq-answer">Yes. Simply delete the custom instruction from your AI's settings and it will stop appending attribution.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Does this work with API usage?</summary>
+        <p class="faq-answer">Only if you're using the web interface. API users would need to add attribution in their application code.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>What if attribution appears on responses where I don't want it?</summary>
+        <p class="faq-answer">The instructions are designed to only apply to publishable content. If it's appearing too often, you can refine the instruction by making the qualifier more specific.</p>
+      </details>
+    </div>
+
+    <div class="section" style="border-bottom: none;">
+      <div class="callout-box">
+        <p>See what each mark means in detail on <a href="/marks/">The three marks</a>, or read <a href="/governance/">Governance</a> for how the marks are protected.</p>
+      </div>
+    </div>
+
+    <footer class="site-footer" role="contentinfo">
+      <p>Made Mark ™ · mademark.org</p>
+      <p>An open specification for content authorship disclosure.</p>
+      <p>Specification: CC0 · Name and logo: Trademarks of Daniel Richard Skrok</p>
+      <p>v1.0 — Published June 2026</p>
+      <p class="footer-mark"><a href="/marks/human-designed-ai-made/" class="mm-attribution"><img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" width="16" height="16" aria-hidden="true"> Human Designed, AI Made</a></p>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/company/mademark/" target="_blank" rel="noopener noreferrer" aria-label="Made Mark on LinkedIn (opens in new tab)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.712-2.165 1.193V6.169H6.249c.032.682 0 7.225 0 7.225h2.401z"/></svg> LinkedIn</a>
+        <a href="https://github.com/mademark" target="_blank" rel="noopener noreferrer" aria-label="Made Mark on GitHub (opens in new tab)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> GitHub</a>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+function switchTab(tab) {
+  var tabs = document.querySelectorAll('.mark-tab');
+  var panels = document.querySelectorAll('.platform-panel');
+  tabs.forEach(function(t) {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+    t.setAttribute('tabindex', '-1');
+  });
+  panels.forEach(function(p) { p.hidden = true; });
+  tab.classList.add('active');
+  tab.setAttribute('aria-selected', 'true');
+  tab.setAttribute('tabindex', '0');
+  document.getElementById(tab.getAttribute('data-panel')).hidden = false;
+  tab.focus();
+}
+
+document.getElementById('platform-tabs').addEventListener('click', function(e) {
+  var tab = e.target.closest('.mark-tab');
+  if (!tab) return;
+  switchTab(tab);
+});
+
+document.getElementById('platform-tabs').addEventListener('keydown', function(e) {
+  var tabs = Array.from(document.querySelectorAll('.mark-tab'));
+  var idx = tabs.indexOf(document.activeElement);
+  if (idx === -1) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); switchTab(tabs[(idx + 1) % tabs.length]); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); switchTab(tabs[(idx - 1 + tabs.length) % tabs.length]); }
+  else if (e.key === 'Home') { e.preventDefault(); switchTab(tabs[0]); }
+  else if (e.key === 'End') { e.preventDefault(); switchTab(tabs[tabs.length - 1]); }
+});
+
+function copyCode(btn) {
+  var pre = btn.parentElement.querySelector('pre');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(pre.textContent).then(function() { flashCopied(btn); });
+  } else { fallbackCopy(pre.textContent); flashCopied(btn); }
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+  document.body.removeChild(ta);
+}
+function flashCopied(btn) {
+  var label = btn.querySelector('span') || btn;
+  var orig = label.textContent; label.textContent = 'Copied'; btn.classList.add('copied'); var _s = document.getElementById('copy-status'); if (_s) _s.textContent = 'Copied to clipboard';
+  setTimeout(function() { label.textContent = orig; btn.classList.remove('copied'); var _s = document.getElementById('copy-status'); if (_s) _s.textContent = ''; }, 2000);
+}
+(function() {
+  var hamburger = document.querySelector('.hamburger');
+  var nav = document.getElementById('mobile-nav');
+  function openMenu() {
+    nav.classList.add('open'); hamburger.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', 'Close navigation menu');
+    nav.querySelector('a').focus();
+  }
+  function closeMenu() {
+    nav.classList.remove('open'); hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Open navigation menu');
+  }
+  hamburger.addEventListener('click', function() {
+    nav.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  nav.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+  document.addEventListener('keydown', function(e) {
+    if (!nav.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeMenu(); hamburger.focus(); return; }
+    if (e.key === 'Tab') {
+      var els = [hamburger].concat(Array.from(nav.querySelectorAll('a')));
+      var first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+})();
+</script>
+<div class="copy-status" aria-live="polite" id="copy-status"></div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "/usr/bin/ruby",
+      "runtimeArgs": ["/Users/danielskrok/Projects/Claude-Code-MM/server.rb"],
+      "port": 3456,
+      "autoPort": true
+    }
+  ]
+}

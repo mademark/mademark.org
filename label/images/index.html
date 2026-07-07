@@ -219,15 +219,12 @@
     canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
     var ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0);
+    // Flat, borderless: the icon's own white square provides the
+    // contrast surface (contentcredentials.org pin treatment).
     var size = Math.max(24, Math.round(Math.min(canvas.width, canvas.height) * 0.06));
-    var pad = Math.round(size * 0.3);
     var margin = Math.round(size * 0.5);
     var x = position === 'bottom-left' ? margin : canvas.width - margin - size;
     var y = canvas.height - margin - size;
-    // White plate behind the icon so it reads on any background.
-    ctx.fillStyle = 'rgba(255,255,255,0.92)';
-    roundRect(ctx, x - pad, y - pad, size + pad * 2, size + pad * 2, Math.round(pad * 0.75));
-    ctx.fill();
     ctx.drawImage(icon, x, y, size, size);
     return new Promise(function (resolve, reject) {
       canvas.toBlob(function (blob) {
@@ -236,16 +233,6 @@
       }, mime, mime === 'image/jpeg' ? 0.92 : undefined);
     });
   }
-  function roundRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
-    ctx.closePath();
-  }
-
   /* ── main pipeline ── */
   function processImage(fileBytes, mime, opts) {
     // opts: {mark, model, provider, license, badge: 'none'|'bottom-left'|'bottom-right', imgEl}

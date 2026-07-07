@@ -136,11 +136,18 @@
   function readU32(b, p) { return ((b[p] << 24) | (b[p + 1] << 16) | (b[p + 2] << 8) | b[p + 3]) >>> 0; }
   function writeU32(b, p, v) { b[p] = (v >>> 24) & 0xFF; b[p + 1] = (v >>> 16) & 0xFF; b[p + 2] = (v >>> 8) & 0xFF; b[p + 3] = v & 0xFF; }
 
-  /* ── SVG icon loader (guaranteed intrinsic dimensions for canvas) ── */
-  function loadMarkIcon(markSlug) {
+  /* ── SVG icon loader (guaranteed intrinsic dimensions for canvas) ──
+     variant 'inverted': transparent background, white frame/glyph —
+     for dark surfaces (the source icons carry their own white square). */
+  function loadMarkIcon(markSlug, variant) {
     return fetch('/assets/svg/mm-icon-' + markSlug + '.svg')
       .then(function (r) { if (!r.ok) throw new Error('Mark icon failed to load.'); return r.text(); })
       .then(function (svgText) {
+        if (variant === 'inverted') {
+          svgText = svgText
+            .replace(/fill="white"/g, 'fill="none"')
+            .replace(/fill="#231F20"/gi, 'fill="#FFFFFF"');
+        }
         if (!/<svg[^>]*\swidth=/.test(svgText)) {
           svgText = svgText.replace(/<svg/, '<svg width="512" height="512"');
         }

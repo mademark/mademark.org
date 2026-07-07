@@ -226,6 +226,10 @@
 
   function renderEndCard(cv, opts) {
     // opts: {mark, model, provider, theme, w, h, icon}
+    // Left-aligned bumper layout (CC video bumpers / contentcredentials
+    // treatment): flat icon — no plate, no border — label and URI in
+    // Source Sans beneath, all on a shared left margin. On dark, the
+    // icon is the inverted-monochrome variant (transparent, white).
     cv.width = opts.w; cv.height = opts.h;
     var ctx = cv.getContext('2d');
     var dark = opts.theme === 'dark';
@@ -233,9 +237,8 @@
     ctx.fillRect(0, 0, opts.w, opts.h);
 
     var S = Math.min(opts.w, opts.h);
-    var iconSize = Math.round(S * 0.20);
-    var pad = Math.round(iconSize * 0.16);
-    var cx = opts.w / 2;
+    var marginX = Math.round(opts.w * 0.10);
+    var iconSize = Math.round(S * 0.18);
 
     var parts = ['MM', MARK_LABELS[opts.mark]];
     if (opts.model) parts.push(opts.model);
@@ -243,43 +246,26 @@
     var label = parts.join(' · ');
     var uri = 'mademark.org/marks/' + opts.mark;
 
-    // Vertical rhythm: icon block, label, URI — centered as a group.
-    var labelPx = fitText(ctx, label, '600 {px}px "Source Code Pro", monospace', Math.round(S * 0.042), opts.w * 0.86);
-    var uriPx = Math.round(S * 0.026);
-    var gap1 = Math.round(S * 0.09);
+    var maxTextW = opts.w - marginX * 2;
+    var labelPx = fitText(ctx, label, '600 {px}px "Source Sans 3", sans-serif', Math.round(S * 0.05), maxTextW);
+    var uriPx = Math.round(S * 0.028);
+    var gap1 = Math.round(S * 0.075);
     var gap2 = Math.round(S * 0.045);
-    var blockH = (iconSize + pad * 2) + gap1 + labelPx + gap2 + uriPx;
+    var blockH = iconSize + gap1 + labelPx + gap2 + uriPx;
     var top = (opts.h - blockH) / 2;
 
-    // Icon on a white plate so the dark-line icon reads on any theme.
-    var plateX = cx - iconSize / 2 - pad, plateY = top;
-    ctx.fillStyle = '#ffffff';
-    if (!dark) { ctx.strokeStyle = '#e2e2e6'; ctx.lineWidth = Math.max(2, S * 0.004); }
-    roundRect(ctx, plateX, plateY, iconSize + pad * 2, iconSize + pad * 2, Math.round(pad * 0.75));
-    ctx.fill();
-    if (!dark) ctx.stroke();
-    ctx.drawImage(opts.icon, cx - iconSize / 2, plateY + pad, iconSize, iconSize);
+    ctx.drawImage(opts.icon, marginX, top, iconSize, iconSize);
 
-    ctx.textAlign = 'center';
+    ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = dark ? '#ffffff' : '#231F20';
-    ctx.font = '600 ' + labelPx + 'px "Source Code Pro", monospace';
-    var labelY = plateY + iconSize + pad * 2 + gap1 + labelPx * 0.35;
-    ctx.fillText(label, cx, labelY);
+    ctx.font = '600 ' + labelPx + 'px "Source Sans 3", sans-serif';
+    var labelY = top + iconSize + gap1 + labelPx * 0.72;
+    ctx.fillText(label, marginX, labelY);
 
     ctx.fillStyle = dark ? '#9a9a9a' : '#595959';
-    ctx.font = uriPx + 'px "Source Code Pro", monospace';
-    ctx.fillText(uri, cx, labelY + gap2 + uriPx);
-  }
-
-  function roundRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
-    ctx.closePath();
+    ctx.font = uriPx + 'px "Source Sans 3", sans-serif';
+    ctx.fillText(uri, marginX, labelY + gap2 + uriPx);
   }
 
   function currentOpts() {
@@ -304,7 +290,8 @@
     snippetText.textContent = snippet;
     snippetCopy.disabled = false;
 
-    window.MMXMP.loadMarkIcon(state.mark).then(function (icon) {
+    var variant = document.getElementById('card-theme').value === 'dark' ? 'inverted' : undefined;
+    window.MMXMP.loadMarkIcon(state.mark, variant).then(function (icon) {
       state.icon = icon;
       return document.fonts.ready;
     }).then(function () {

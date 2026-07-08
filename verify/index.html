@@ -135,7 +135,7 @@
     </div>
 
     <div class="section">
-      <h2 id="step-file">Your file <span class="caption">(JPEG, PNG, or MP3 for Made Mark; JPEG, PNG, and most media for C2PA)</span></h2>
+      <h2 id="step-file">Your file <span class="caption">(JPEG, PNG, MP3, or WAV for Made Mark; JPEG, PNG, and most media for C2PA)</span></h2>
       <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-labelledby="step-file">
         <p><strong>Drop a file here</strong> or click to choose one</p>
         <input type="file" id="file-input" class="sr-only" aria-label="Choose a file to verify">
@@ -288,10 +288,43 @@
     if (!out.MADEMARK_MARK) return null;
     return { mark: out.MADEMARK_MARK, model: out.MADEMARK_MODEL || null, provider: out.MADEMARK_PROVIDER || null, license: out.MADEMARK_SOURCE_LICENSE || null };
   }
+  /* WAV: read the Made Mark label from a LIST/INFO/ICMT comment chunk.
+     Mirrors what /label/audio/ writes: "<label> — <mark URL>". */
+  function mmFromWav(b) {
+    function u32(p) { return (b[p] | (b[p + 1] << 8) | (b[p + 2] << 16) | (b[p + 3] << 24)) >>> 0; }
+    function cc(p) { return String.fromCharCode(b[p], b[p + 1], b[p + 2], b[p + 3]); }
+    var pos = 12;
+    while (pos + 8 <= b.length) {
+      var id = cc(pos), size = u32(pos + 4);
+      var dataStart = pos + 8, next = dataStart + size + (size % 2);
+      if (next > b.length) break;
+      if (id === 'LIST' && size >= 4 && cc(dataStart) === 'INFO') {
+        var sp = dataStart + 4, listEnd = dataStart + size;
+        while (sp + 8 <= listEnd) {
+          var sid = cc(sp), ssize = u32(sp + 4);
+          var snext = sp + 8 + ssize + (ssize % 2);
+          if (snext > listEnd) break;
+          if (sid === 'ICMT') {
+            var txt = new TextDecoder('utf-8').decode(b.subarray(sp + 8, sp + 8 + ssize)).replace(/\0+$/, '');
+            var um = txt.match(/https?:\/\/mademark\.org\/marks\/[a-z-]+/);
+            if (um) {
+              var lbl = txt.slice(0, um.index).replace(/\s*[—-]\s*$/, '').trim();
+              return { mark: um[0], embeddedLabel: lbl || null };
+            }
+          }
+          sp = snext;
+        }
+      }
+      pos = next;
+    }
+    return null;
+  }
   function readMadeMark(b) {
     var xmp = null;
     if (b[0] === 0xFF && b[1] === 0xD8) xmp = xmpFromJpeg(b);
     else if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47) xmp = xmpFromPng(b);
+    else if (b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 &&
+             b[8] === 0x57 && b[9] === 0x41 && b[10] === 0x56 && b[11] === 0x45) return mmFromWav(b);
     else return mmFromId3(b);
     if (!xmp) return null;
     var g = function (t) {
@@ -335,6 +368,7 @@
     if (mm.model) rows += '<p class="caption">Model: ' + esc(mm.model) + '</p>';
     if (mm.provider) rows += '<p class="caption">Provider: ' + esc(mm.provider) + '</p>';
     if (mm.license) rows += '<p class="caption">Source license: ' + esc(mm.license) + '</p>';
+    if (mm.embeddedLabel) rows += '<p class="caption">Embedded label: ' + esc(mm.embeddedLabel) + '</p>';
     el.innerHTML =
       '<div class="result-headline"><img src="/assets/svg/mm-icon-' + slug + '.svg" alt="">MM · ' + MARK_LABELS[slug] + '</div>' +
       '<p style="margin-top: 12px;">Whoever labeled this file disclosed that it was ' + MARK_MEANINGS[slug] + '.</p>' +

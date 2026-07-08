@@ -115,14 +115,14 @@
 
     <div class="section">
       <h1>Label audio</h1>
-      <p>Embed a Made Mark label into an MP3's ID3 tags — the metadata podcast apps and players read. Your existing tags (title, artist, artwork) are kept; the label is added alongside them. Everything runs in your browser — your file never leaves your device.</p>
+      <p>Embed a Made Mark label into an MP3's ID3 tags or a WAV's INFO metadata — what podcast apps and players read. Your existing tags (title, artist, artwork) are kept; the label is added alongside them. Everything runs in your browser — your file never leaves your device.</p>
     </div>
 
     <div class="section">
-      <h2 id="step-file">1 · Your audio <span class="caption">(MP3)</span></h2>
+      <h2 id="step-file">1 · Your audio <span class="caption">(MP3 or WAV)</span></h2>
       <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-labelledby="step-file">
-        <p><strong>Drop an MP3 here</strong> or click to choose a file</p>
-        <input type="file" id="file-input" accept="audio/mpeg,.mp3" class="sr-only" aria-label="Choose an MP3 file">
+        <p><strong>Drop an MP3 or WAV here</strong> or click to choose a file</p>
+        <input type="file" id="file-input" accept="audio/mpeg,audio/wav,audio/x-wav,.mp3,.wav" class="sr-only" aria-label="Choose an MP3 or WAV file">
       </div>
       <p class="tool-status" id="file-status" aria-live="polite"></p>
     </div>
@@ -166,7 +166,7 @@
       <p style="margin-top: 16px;"><button id="download-btn" class="btn-pack" type="button" disabled>Download labeled MP3</button></p>
       <p class="tool-status" id="result-status" aria-live="polite"></p>
       <div class="error-msg" id="error-box" hidden></div>
-      <p class="caption" style="margin-top: 16px;">The label is written as <span class="inline-code">TXXX</span> frames plus a comment any player can show. Verify with <span class="inline-code">exiftool yourfile.mp3</span> or any tag editor. For FLAC, WAV, or AAC, embed via XMP — see <a href="/implement/#xmp" class="text-link">Implement</a>.</p>
+      <p class="caption" style="margin-top: 16px;">In an MP3, the label is written as <span class="inline-code">TXXX</span> frames plus a comment; in a WAV, as a <span class="inline-code">LIST/INFO</span> comment chunk. Either way any player or tag editor can show it — verify with <span class="inline-code">exiftool yourfile</span>, or read it back on the <a href="/verify/" class="text-link">verify page</a>. For FLAC or AAC, embed via XMP — see <a href="/implement/#xmp" class="text-link">Implement</a>.</p>
     </div>
 
     <div class="section">
@@ -347,7 +347,86 @@
     return { bytes: concat([header, frames, bytes.subarray(audioStart)]), label: label, note: replacedNote };
   }
 
-  window.MMAudio = { labelMp3: labelMp3 };
+  /* ── WAV (RIFF) helpers ── */
+  function readU32LE(b, p) { return (b[p] | (b[p + 1] << 8) | (b[p + 2] << 16) | (b[p + 3] << 24)) >>> 0; }
+  function u32le(n) { return new Uint8Array([n & 0xFF, (n >>> 8) & 0xFF, (n >>> 16) & 0xFF, (n >>> 24) & 0xFF]); }
+  function fourcc(b, p) { return String.fromCharCode(b[p], b[p + 1], b[p + 2], b[p + 3]); }
+  function even(bytes) { return bytes.length % 2 ? concat([bytes, new Uint8Array([0])]) : bytes; }
+
+  /* Build a LIST/INFO chunk carrying the given INFO sub-chunks (each already
+     a full <4CC><size LE><padded data> block). */
+  function infoList(subChunks) {
+    var body = concat([ascii('INFO')].concat(subChunks));
+    return concat([ascii('LIST'), u32le(body.length), even(body)]);
+  }
+  function icmtChunk(text) {
+    var data = new TextEncoder().encode(text + '\0'); // INFO strings are NUL-terminated
+    return concat([ascii('ICMT'), u32le(data.length), even(data)]);
+  }
+
+  /* ── main: write the Made Mark label into a WAV's LIST/INFO/ICMT ──
+     Existing chunks (fmt, data, other INFO fields) are preserved. A prior
+     Made Mark ICMT is dropped so re-labeling never stacks. */
+  function labelWav(bytes, opts) {
+    if (fourcc(bytes, 0) !== 'RIFF') throw new Error('Not a valid WAV file (missing RIFF header).');
+    if (fourcc(bytes, 8) !== 'WAVE') throw new Error('Not a valid WAV file (missing WAVE type).');
+
+    var uri = 'https://mademark.org/marks/' + opts.mark;
+    var parts = ['MM', MARK_LABELS[opts.mark]];
+    if (opts.model) parts.push(opts.model);
+    if (opts.provider) parts.push(opts.provider);
+    if (opts.license) parts.push(opts.license);
+    var label = parts.join(' · ');
+    var ourIcmt = icmtChunk(label + ' — ' + uri);
+
+    // Walk top-level chunks (after "RIFF"<size>"WAVE" = offset 12).
+    var pos = 12, out = [], infoIndex = -1, keptInfoSubs = null;
+    while (pos + 8 <= bytes.length) {
+      var id = fourcc(bytes, pos);
+      var size = readU32LE(bytes, pos + 4);
+      var dataStart = pos + 8;
+      var next = dataStart + size + (size % 2); // chunks pad to even
+      if (next > bytes.length) break; // truncated — stop, keep what we have
+
+      if (id === 'LIST' && size >= 4 && fourcc(bytes, dataStart) === 'INFO') {
+        // Preserve this INFO list's sub-chunks except a prior Made Mark ICMT.
+        keptInfoSubs = [];
+        var sp = dataStart + 4, listEnd = dataStart + size;
+        while (sp + 8 <= listEnd) {
+          var sid = fourcc(bytes, sp);
+          var ssize = readU32LE(bytes, sp + 4);
+          var snext = sp + 8 + ssize + (ssize % 2);
+          if (snext > listEnd) break;
+          var isOurs = false;
+          if (sid === 'ICMT') {
+            var txt = '';
+            for (var i = sp + 8; i < sp + 8 + ssize; i++) txt += String.fromCharCode(bytes[i]);
+            isOurs = txt.indexOf('mademark.org/marks/') !== -1;
+          }
+          if (!isOurs) keptInfoSubs.push(bytes.subarray(sp, snext));
+          sp = snext;
+        }
+        infoIndex = out.length;
+        out.push(null); // placeholder; rebuilt after the walk
+      } else {
+        out.push(bytes.subarray(pos, next));
+      }
+      pos = next;
+    }
+
+    if (infoIndex >= 0) {
+      out[infoIndex] = infoList(keptInfoSubs.concat([ourIcmt]));
+    } else {
+      out.push(infoList([ourIcmt])); // no INFO list existed — append one
+    }
+
+    var body = concat(out);
+    var riffLen = 4 + body.length; // "WAVE" + all chunks
+    var header = concat([ascii('RIFF'), u32le(riffLen), ascii('WAVE')]);
+    return { bytes: concat([header, body]), label: label, note: '' };
+  }
+
+  window.MMAudio = { labelMp3: labelMp3, labelWav: labelWav };
 
   /* ── UI wiring ── */
   var state = { file: null, bytes: null, mark: null };
@@ -389,14 +468,17 @@
     setError('');
     resultStatus.textContent = '';
     if (!file) return;
-    var isMp3 = file.type === 'audio/mpeg' || /\.mp3$/i.test(file.name);
-    if (!isMp3) {
-      setError('Only MP3 is supported right now. For FLAC, WAV, or AAC, embed via XMP — see the Implement page.');
+    var format = null;
+    if (file.type === 'audio/mpeg' || /\.mp3$/i.test(file.name)) format = 'mp3';
+    else if (file.type === 'audio/wav' || file.type === 'audio/x-wav' || /\.wav$/i.test(file.name)) format = 'wav';
+    if (!format) {
+      setError('MP3 and WAV are supported. For FLAC or AAC, embed via XMP — see the Implement page.');
       return;
     }
     file.arrayBuffer().then(function (buf) {
       state.file = file;
       state.bytes = new Uint8Array(buf);
+      state.format = format;
       fileStatus.textContent = file.name + ' — ' + Math.round(file.size / 1024) + ' KB';
       refresh();
     });
@@ -433,17 +515,21 @@
     setError('');
     resultStatus.textContent = 'Processing…';
     try {
-      var result = labelMp3(state.bytes, {
+      var opts = {
         mark: state.mark,
         model: document.getElementById('in-model').value.trim(),
         provider: document.getElementById('in-provider').value.trim(),
         license: document.getElementById('in-license').value.trim()
-      });
-      var base = state.file.name.replace(/\.mp3$/i, '');
-      var blob = new Blob([result.bytes], { type: 'audio/mpeg' });
+      };
+      var isWav = state.format === 'wav';
+      var result = isWav ? labelWav(state.bytes, opts) : labelMp3(state.bytes, opts);
+      var ext = isWav ? '.wav' : '.mp3';
+      var mime = isWav ? 'audio/wav' : 'audio/mpeg';
+      var base = state.file.name.replace(/\.(mp3|wav)$/i, '');
+      var blob = new Blob([result.bytes], { type: mime });
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = base + '-mademark.mp3';
+      a.download = base + '-mademark' + ext;
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
       resultStatus.textContent = 'Done — saved as ' + a.download + ' (' + Math.round(blob.size / 1024) + ' KB).' + result.note;

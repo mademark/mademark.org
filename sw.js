@@ -4,7 +4,7 @@
    Same-origin plus the two pinned CDN libraries are cached at runtime.
    Bump CACHE on each release so stale caches are dropped on activate. */
 
-var CACHE = 'mademark-v2.8.0';
+var CACHE = 'mademark-v2.9.0';
 
 var CORE = [
   '/',

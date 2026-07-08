@@ -948,6 +948,31 @@ a.choice-card:hover .choice-cta-primary {
   border-bottom: none;
 }
 
+/* ── STEP LIST ───────────────────────────────────── */
+/* Semantic <ol> version of numbered-row for sequential
+   instructions — screen readers announce item count and
+   position; the visible circles are aria-hidden. Keep
+   role="list" on the <ol>: list-style:none strips list
+   semantics in Safari/VoiceOver without it. */
+
+.step-list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.step-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.step-list li:last-child {
+  border-bottom: none;
+}
+
 /* ── DIVIDER ─────────────────────────────────────── */
 
 .divider {

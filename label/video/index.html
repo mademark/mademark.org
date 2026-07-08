@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Label video | Made Mark</title>
+  <meta name="description" content="Generate a Made Mark end card for your video — 16:9, vertical, or square — plus a ready-to-paste description snippet. Runs entirely in your browser.">
+  <link rel="canonical" href="https://mademark.org/label/video/">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Label video | Made Mark">
+  <meta property="og:description" content="Generate a Made Mark end card for your video, plus a ready-to-paste description snippet.">
+  <meta property="og:url" content="https://mademark.org/label/video/">
+  <meta property="og:image" content="https://mademark.org/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Label video | Made Mark">
+  <meta name="twitter:description" content="End cards and description snippets for labeled video.">
+  <meta name="twitter:image" content="https://mademark.org/assets/og-image.png">
+  <style>
+    /* Page-scoped additions — uses existing tokens from /style.css. */
+    .endcard-preview {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+    /* display:block above would defeat the hidden attribute */
+    .endcard-preview[hidden] { display: none; }
+    .tool-status { margin-top: 12px; font-size: 14px; color: var(--muted); }
+    .tool-select {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 16px;
+      color: var(--ink);
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      background: var(--white);
+      min-height: 44px;
+    }
+  </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#231F20">
+  <script type="application/ld+json">
+  {
+    "@context": "https://mademark.org/ns",
+    "@type": "CreativeWork",
+    "madeMark": {
+      "mark": "https://mademark.org/marks/human-designed-ai-made",
+      "provider": "Anthropic"
+    }
+  }
+  </script>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="/" class="logo-link">
+      <img src="/assets/svg/mm-logo-dark.svg" alt="Made Mark" class="logo">
+    </a>
+    <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Main navigation">
+  <a href="/">Overview</a>
+  <a href="/marks/">The three marks</a>
+  <a href="/marks/human-made/" class="nav-sub">Human Made</a>
+  <a href="/marks/human-designed-ai-made/" class="nav-sub">Human Designed, AI Made</a>
+  <a href="/marks/ai-made/" class="nav-sub">AI Made</a>
+  <a href="/label/" class="active">Label your work</a>
+  <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
+  <a href="/generate/" class="nav-sub">Generate a label</a>
+  <a href="/implement/">Implement</a>
+  <a href="/downloads/" class="nav-sub">Downloads</a>
+  <a href="/verify/" class="nav-sub">Verify a file</a>
+  <a href="/about/">About</a>
+  <a href="/governance/" class="nav-sub">Governance</a>
+  <a href="/colophon/" class="nav-sub">Colophon</a>
+</nav>
+
+<div class="page-layout">
+  <nav class="sidebar-nav" aria-label="Main navigation">
+    <a href="/">Overview</a>
+    <a href="/marks/">The three marks</a>
+    <a href="/marks/human-made/" class="nav-sub">Human Made</a>
+    <a href="/marks/human-designed-ai-made/" class="nav-sub">Human Designed, AI Made</a>
+    <a href="/marks/ai-made/" class="nav-sub">AI Made</a>
+    <a href="/label/" class="active">Label your work</a>
+    <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
+    <a href="/generate/" class="nav-sub">Generate a label</a>
+    <a href="/implement/">Implement</a>
+    <a href="/downloads/" class="nav-sub">Downloads</a>
+    <a href="/verify/" class="nav-sub">Verify a file</a>
+    <a href="/about/">About</a>
+    <a href="/governance/" class="nav-sub">Governance</a>
+    <a href="/colophon/" class="nav-sub">Colophon</a>
+  </nav>
+
+  <main class="content" id="main-content" role="main">
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <a href="/label/">Label your work</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <span aria-current="page">Video</span>
+    </nav>
+
+    <div class="section">
+      <h1>Label video</h1>
+      <p>Video files can't be relabeled in a browser without re-encoding, so Made Mark travels two ways: an <strong>end card</strong> you drop on the final seconds of your edit, and a <strong>description snippet</strong> for wherever the video is published. The end card PNG carries the label in its own XMP metadata. Everything runs in your browser.</p>
+    </div>
+
+    <div class="section">
+      <h2 id="mark-choice">1 · How was this video made? <span class="caption">(required)</span></h2>
+      <div class="gen-cards" role="radiogroup" aria-labelledby="mark-choice">
+        <button class="gen-card" type="button" role="radio" aria-checked="false" data-mark="human-made">
+          <img src="/assets/svg/mm-icon-human-made.svg" alt="" aria-hidden="true">
+          <span class="gen-card-text"><strong>Human Made</strong><span>Conceived and produced by people, without AI tools.</span></span>
+        </button>
+        <button class="gen-card" type="button" role="radio" aria-checked="false" data-mark="human-designed-ai-made">
+          <img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" aria-hidden="true">
+          <span class="gen-card-text"><strong>Human Designed, AI Made</strong><span>A person shaped the intent — AI produced the video.</span></span>
+        </button>
+        <button class="gen-card" type="button" role="radio" aria-checked="false" data-mark="ai-made">
+          <img src="/assets/svg/mm-icon-ai-made.svg" alt="" aria-hidden="true">
+          <span class="gen-card-text"><strong>AI Made</strong><span>Conceived and produced primarily by AI.</span></span>
+        </button>
+      </div>
+
+      <div class="gen-inputs">
+        <div class="gen-input-group">
+          <label for="in-model">Model (optional)</label>
+          <input type="text" id="in-model" placeholder="e.g. Claude Sonnet 4.6">
+        </div>
+        <div class="gen-input-group">
+          <label for="in-provider">Provider (optional)</label>
+          <input type="text" id="in-provider" placeholder="e.g. Anthropic">
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>2 · End card</h2>
+      <div class="gen-inputs" style="margin-top: 0;">
+        <div class="gen-input-group">
+          <label for="card-size">Size</label>
+          <select id="card-size" class="tool-select">
+            <option value="1920x1080" selected>16:9 — 1920 × 1080 (YouTube, landscape)</option>
+            <option value="1080x1920">9:16 — 1080 × 1920 (Shorts, Reels, TikTok)</option>
+            <option value="1080x1080">1:1 — 1080 × 1080 (square)</option>
+          </select>
+        </div>
+        <div class="gen-input-group">
+          <label for="card-theme">Theme</label>
+          <select id="card-theme" class="tool-select">
+            <option value="dark" selected>Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </div>
+      </div>
+      <canvas id="endcard" class="endcard-preview" role="img" aria-label="End card preview: the selected mark icon with its Made Mark label" hidden></canvas>
+      <p class="tool-status" id="card-status" aria-live="polite">Choose a mark in step 1 to render your end card.</p>
+      <p style="margin-top: 16px;"><button id="download-btn" class="btn-pack" type="button" disabled>Download end card (PNG)</button></p>
+      <p class="caption" style="margin-top: 12px;">Drop it on the last 2–3 seconds of your edit. The PNG itself carries the label in XMP — verify with <span class="inline-code">exiftool -XMP-mm:all endcard.png</span>.</p>
+    </div>
+
+    <div class="section">
+      <h2>3 · Description snippet</h2>
+      <p>Paste this wherever the video is published — YouTube description, Vimeo, social caption. It survives platforms that strip file metadata.</p>
+      <div class="copy-block"><span id="snippet-text">Choose a mark first.</span><button class="copy-btn" id="snippet-copy" aria-label="Copy description snippet" disabled><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button></div>
+      <p class="caption" style="margin-top: 16px;">Embedding XMP or a C2PA assertion directly in the video file is the more durable path when your pipeline supports it — see <a href="/implement/#xmp" class="text-link">Implement</a>.</p>
+    </div>
+
+    <footer class="site-footer">
+      <p>Made Mark ™ · mademark.org</p>
+      <p>An open specification for content authorship disclosure.</p>
+      <p>Specification: CC0 · Name and logo: Trademarks of Daniel Richard Skrok</p>
+      <p>v2.0 — Published July 2026</p>
+      <p class="footer-mark"><a href="/marks/human-designed-ai-made/" class="mm-attribution"><img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" width="16" height="16" aria-hidden="true"> Human Designed, AI Made</a></p>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/company/mademark/" target="_blank" rel="noopener noreferrer" aria-label="Made Mark on LinkedIn (opens in new tab)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.712-2.165 1.193V6.169H6.249c.032.682 0 7.225 0 7.225h2.401z"/></svg> LinkedIn</a>
+        <a href="https://github.com/mademark" target="_blank" rel="noopener noreferrer" aria-label="Made Mark on GitHub (opens in new tab)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> GitHub</a>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script src="/assets/js/mm-xmp.js"></script>
+<script>
+/* ── Made Mark end-card generator ────────────────────────────────────
+   Renders the end card on a canvas (live preview at full resolution),
+   exports PNG, and embeds the mm: XMP packet via MMXMP. Exposed on
+   window.MMVideo for testing.                                        */
+
+(function () {
+  'use strict';
+
+  var MARK_LABELS = window.MMXMP.MARK_LABELS;
+  var state = { mark: null, icon: null };
+  var canvas = document.getElementById('endcard');
+  var cardStatus = document.getElementById('card-status');
+  var downloadBtn = document.getElementById('download-btn');
+  var snippetText = document.getElementById('snippet-text');
+  var snippetCopy = document.getElementById('snippet-copy');
+
+  function labelParts() {
+    var model = document.getElementById('in-model').value.trim();
+    var provider = document.getElementById('in-provider').value.trim();
+    var parts = ['MM', MARK_LABELS[state.mark]];
+    if (model) parts.push(model);
+    if (provider) parts.push(provider);
+    return parts;
+  }
+
+  /* Shrink font size until text fits maxWidth; returns the size used. */
+  function fitText(ctx, text, weightFamily, startPx, maxWidth) {
+    var px = startPx;
+    do {
+      ctx.font = weightFamily.replace('{px}', px);
+      if (ctx.measureText(text).width <= maxWidth || px <= 12) return px;
+      px -= 2;
+    } while (true);
+  }
+
+  function renderEndCard(cv, opts) {
+    // opts: {mark, model, provider, theme, w, h, icon}
+    // Left-aligned bumper layout (CC video bumpers / contentcredentials
+    // treatment): flat icon — no plate, no border — label and URI in
+    // Source Sans beneath, all on a shared left margin. On dark, the
+    // icon is the inverted-monochrome variant (transparent, white).
+    cv.width = opts.w; cv.height = opts.h;
+    var ctx = cv.getContext('2d');
+    var dark = opts.theme === 'dark';
+    ctx.fillStyle = dark ? '#231F20' : '#ffffff';
+    ctx.fillRect(0, 0, opts.w, opts.h);
+
+    var S = Math.min(opts.w, opts.h);
+    var marginX = Math.round(opts.w * 0.10);
+    var iconSize = Math.round(S * 0.18);
+
+    var parts = ['MM', MARK_LABELS[opts.mark]];
+    if (opts.model) parts.push(opts.model);
+    if (opts.provider) parts.push(opts.provider);
+    var label = parts.join(' · ');
+    var uri = 'mademark.org/marks/' + opts.mark;
+
+    var maxTextW = opts.w - marginX * 2;
+    var labelPx = fitText(ctx, label, '600 {px}px "Source Sans 3", sans-serif', Math.round(S * 0.05), maxTextW);
+    var uriPx = Math.round(S * 0.028);
+    var gap1 = Math.round(S * 0.075);
+    var gap2 = Math.round(S * 0.045);
+    var blockH = iconSize + gap1 + labelPx + gap2 + uriPx;
+    var top = (opts.h - blockH) / 2;
+
+    ctx.drawImage(opts.icon, marginX, top, iconSize, iconSize);
+
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = dark ? '#ffffff' : '#231F20';
+    ctx.font = '600 ' + labelPx + 'px "Source Sans 3", sans-serif';
+    var labelY = top + iconSize + gap1 + labelPx * 0.72;
+    ctx.fillText(label, marginX, labelY);
+
+    ctx.fillStyle = dark ? '#9a9a9a' : '#595959';
+    ctx.font = uriPx + 'px "Source Sans 3", sans-serif';
+    ctx.fillText(uri, marginX, labelY + gap2 + uriPx);
+  }
+
+  function currentOpts() {
+    var dims = document.getElementById('card-size').value.split('x');
+    return {
+      mark: state.mark,
+      model: document.getElementById('in-model').value.trim(),
+      provider: document.getElementById('in-provider').value.trim(),
+      theme: document.getElementById('card-theme').value,
+      w: parseInt(dims[0], 10), h: parseInt(dims[1], 10),
+      icon: state.icon
+    };
+  }
+
+  function refresh() {
+    if (!state.mark) {
+      downloadBtn.disabled = true;
+      snippetCopy.disabled = true;
+      return;
+    }
+    var snippet = labelParts().join(' · ') + '\nhttps://mademark.org/marks/' + state.mark;
+    snippetText.textContent = snippet;
+    snippetCopy.disabled = false;
+
+    var variant = document.getElementById('card-theme').value === 'dark' ? 'inverted' : undefined;
+    window.MMXMP.loadMarkIcon(state.mark, variant).then(function (icon) {
+      state.icon = icon;
+      return document.fonts.ready;
+    }).then(function () {
+      renderEndCard(canvas, currentOpts());
+      canvas.hidden = false;
+      cardStatus.textContent = 'Preview above renders at full resolution (' + currentOpts().w + ' × ' + currentOpts().h + ').';
+      downloadBtn.disabled = false;
+    }).catch(function (err) {
+      cardStatus.textContent = err.message || 'Could not render the end card.';
+    });
+  }
+
+  document.querySelectorAll('.gen-card[data-mark]').forEach(function (card) {
+    card.addEventListener('click', function () {
+      document.querySelectorAll('.gen-card[data-mark]').forEach(function (c) {
+        c.classList.remove('selected'); c.setAttribute('aria-checked', 'false');
+      });
+      card.classList.add('selected'); card.setAttribute('aria-checked', 'true');
+      state.mark = card.getAttribute('data-mark');
+      refresh();
+    });
+  });
+  ['in-model', 'in-provider', 'card-size', 'card-theme'].forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener('input', refresh);
+    el.addEventListener('change', refresh);
+  });
+
+  downloadBtn.addEventListener('click', function () {
+    var opts = currentOpts();
+    canvas.toBlob(function (blob) {
+      if (!blob) { cardStatus.textContent = 'Could not export the end card.'; return; }
+      blob.arrayBuffer().then(function (buf) {
+        var xmp = window.MMXMP.buildXmp(opts.mark, opts.model, opts.provider, '');
+        var out = window.MMXMP.embedXmpPng(new Uint8Array(buf), xmp);
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([out], { type: 'image/png' }));
+        a.download = 'mademark-endcard-' + opts.mark + '-' + opts.w + 'x' + opts.h + '.png';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
+        cardStatus.textContent = 'Done — saved as ' + a.download + '.';
+      });
+    }, 'image/png');
+  });
+
+  snippetCopy.addEventListener('click', function () {
+    var text = snippetText.textContent;
+    (navigator.clipboard && navigator.clipboard.writeText
+      ? navigator.clipboard.writeText(text)
+      : Promise.reject()
+    ).then(function () {
+      var span = snippetCopy.querySelector('span:last-child');
+      var orig = span.textContent;
+      span.textContent = 'Copied';
+      snippetCopy.classList.add('copied');
+      setTimeout(function () { span.textContent = orig; snippetCopy.classList.remove('copied'); }, 2000);
+    }).catch(function () { /* clipboard unavailable; text is selectable */ });
+  });
+
+  window.MMVideo = { renderEndCard: renderEndCard };
+})();
+
+(function () {
+  var hamburger = document.querySelector('.hamburger');
+  var nav = document.getElementById('mobile-nav');
+  function openMenu() {
+    nav.classList.add('open'); hamburger.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', 'Close navigation menu');
+    nav.querySelector('a').focus();
+  }
+  function closeMenu() {
+    nav.classList.remove('open'); hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Open navigation menu');
+  }
+  hamburger.addEventListener('click', function () {
+    nav.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', closeMenu); });
+  document.addEventListener('keydown', function (e) {
+    if (!nav.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeMenu(); hamburger.focus(); return; }
+    if (e.key === 'Tab') {
+      var els = [hamburger].concat(Array.from(nav.querySelectorAll('a')));
+      var first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+})();
+</script>
+
+<script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }</script>
+</body>
+</html>

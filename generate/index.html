@@ -19,6 +19,18 @@
   <meta name="twitter:title" content="Generate a label | Made Mark">
   <meta name="twitter:description" content="Generate a Made Mark label for your content.">
   <meta name="twitter:image" content="https://mademark.org/assets/og-image.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#231F20">
+  <script type="application/ld+json">
+  {
+    "@context": "https://mademark.org/ns",
+    "@type": "CreativeWork",
+    "madeMark": {
+      "mark": "https://mademark.org/marks/human-designed-ai-made",
+      "provider": "Anthropic"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -38,26 +50,44 @@
 <nav class="mobile-nav" id="mobile-nav" aria-label="Main navigation">
   <a href="/">Overview</a>
   <a href="/marks/">The three marks</a>
-  <a href="/generate/" class="active">Generate a label</a>
-  <a href="/governance/">Governance</a>
-  <a href="/downloads/">Downloads</a>
-    <a href="/colophon/">Colophon</a>
+  <a href="/marks/human-made/" class="nav-sub">Human Made</a>
+  <a href="/marks/human-designed-ai-made/" class="nav-sub">Human Designed, AI Made</a>
+  <a href="/marks/ai-made/" class="nav-sub">AI Made</a>
+  <a href="/label/">Label your work</a>
+  <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
+  <a href="/generate/" class="nav-sub active">Generate a label</a>
+  <a href="/implement/">Implement</a>
+  <a href="/downloads/" class="nav-sub">Downloads</a>
+  <a href="/verify/" class="nav-sub">Verify a file</a>
+  <a href="/about/">About</a>
+  <a href="/governance/" class="nav-sub">Governance</a>
+  <a href="/colophon/" class="nav-sub">Colophon</a>
 </nav>
 
 <div class="page-layout">
   <nav class="sidebar-nav" aria-label="Main navigation">
     <a href="/">Overview</a>
     <a href="/marks/">The three marks</a>
-    <a href="/generate/" class="active">Generate a label</a>
-    <a href="/governance/">Governance</a>
-    <a href="/downloads/">Downloads</a>
-    <a href="/colophon/">Colophon</a>
+    <a href="/marks/human-made/" class="nav-sub">Human Made</a>
+    <a href="/marks/human-designed-ai-made/" class="nav-sub">Human Designed, AI Made</a>
+    <a href="/marks/ai-made/" class="nav-sub">AI Made</a>
+    <a href="/label/">Label your work</a>
+    <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
+    <a href="/generate/" class="nav-sub active">Generate a label</a>
+    <a href="/implement/">Implement</a>
+    <a href="/downloads/" class="nav-sub">Downloads</a>
+    <a href="/verify/" class="nav-sub">Verify a file</a>
+    <a href="/about/">About</a>
+    <a href="/governance/" class="nav-sub">Governance</a>
+    <a href="/colophon/" class="nav-sub">Colophon</a>
   </nav>
 
   <main class="content" id="main-content" role="main">
 
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Home</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <a href="/label/">Label your work</a>
       <span class="sep" aria-hidden="true">›</span>
       <span aria-current="page">Generate a label</span>
     </nav>
@@ -129,7 +159,7 @@
         <div class="gen-panel active" id="panel-jsonld" role="tabpanel" aria-labelledby="tab-jsonld">
           <p class="caption">Paste into your HTML &lt;head&gt; element.</p>
           <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy JSON-LD to clipboard">Copy JSON-LD</button>
+            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy JSON-LD to clipboard"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy JSON-LD</span></button>
             <pre id="out-jsonld"></pre>
           </div>
         </div>
@@ -137,7 +167,7 @@
         <div class="gen-panel" id="panel-xmp" role="tabpanel" aria-labelledby="tab-xmp">
           <p class="caption">Add to your file's XMP metadata block.</p>
           <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy XMP to clipboard">Copy XMP</button>
+            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy XMP to clipboard"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy XMP</span></button>
             <pre id="out-xmp"></pre>
           </div>
         </div>
@@ -145,7 +175,7 @@
         <div class="gen-panel" id="panel-c2pa" role="tabpanel" aria-labelledby="tab-c2pa">
           <p class="caption">Include this assertion in your C2PA manifest.</p>
           <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy C2PA assertion to clipboard">Copy C2PA</button>
+            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy C2PA assertion to clipboard"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy C2PA</span></button>
             <pre id="out-c2pa"></pre>
           </div>
         </div>
@@ -153,7 +183,7 @@
         <div class="gen-panel" id="panel-badge" role="tabpanel" aria-labelledby="tab-badge">
           <p class="caption">Paste into your webpage to display a clickable Made Mark badge linking to the mark definition.</p>
           <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy badge HTML to clipboard">Copy badge</button>
+            <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy badge HTML to clipboard"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy badge</span></button>
             <pre id="out-badge"></pre>
           </div>
         </div>
@@ -162,7 +192,7 @@
           <p class="caption">Plain text label</p>
           <div class="copy-block">
             <span id="out-label"></span>
-            <button class="copy-btn" id="copy-label-btn" aria-label="Copy plain text label to clipboard">Copy label</button>
+            <button class="copy-btn" id="copy-label-btn" aria-label="Copy plain text label to clipboard"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy label</span></button>
           </div>
         </div>
       </div>
@@ -192,7 +222,7 @@
       <p>Made Mark ™ · mademark.org</p>
       <p>An open specification for content authorship disclosure.</p>
       <p>Specification: CC0 · Name and logo: Trademarks of Daniel Richard Skrok</p>
-      <p>v1.0 — Published June 2026</p>
+      <p>v2.0 — Published July 2026</p>
       <p class="footer-mark"><a href="/marks/human-designed-ai-made/" class="mm-attribution"><img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" width="16" height="16" aria-hidden="true"> Human Designed, AI Made</a></p>
       <div class="social-links">
         <a href="https://www.linkedin.com/company/mademark/" target="_blank" rel="noopener noreferrer" aria-label="Made Mark on LinkedIn (opens in new tab)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.712-2.165 1.193V6.169H6.249c.032.682 0 7.225 0 7.225h2.401z"/></svg> LinkedIn</a>
@@ -370,8 +400,9 @@ function fallbackCopy(text) {
   document.body.removeChild(ta);
 }
 function flashCopied(btn) {
-  var orig = btn.textContent; btn.textContent = 'Copied'; var _s = document.getElementById('copy-status'); if (_s) _s.textContent = 'Copied to clipboard';
-  setTimeout(function() { btn.textContent = orig; var _s = document.getElementById('copy-status'); if (_s) _s.textContent = ''; }, 2000);
+  var label = btn.querySelector('span') || btn;
+  var orig = label.textContent; label.textContent = 'Copied'; btn.classList.add('copied'); var _s = document.getElementById('copy-status'); if (_s) _s.textContent = 'Copied to clipboard';
+  setTimeout(function() { label.textContent = orig; btn.classList.remove('copied'); var _s = document.getElementById('copy-status'); if (_s) _s.textContent = ''; }, 2000);
 }
 
 (function() {
@@ -406,5 +437,6 @@ function flashCopied(btn) {
 </script>
 
 <div class="copy-status" aria-live="polite" id="copy-status"></div>
+<script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }</script>
 </body>
 </html>

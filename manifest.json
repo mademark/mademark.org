@@ -1,0 +1,21 @@
+{
+  "name": "Made Mark",
+  "short_name": "Made Mark",
+  "description": "An open specification for content authorship disclosure. Label your work, verify a file.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#231F20",
+  "icons": [
+    { "src": "/assets/png/icons/mm-icon/mm-icon-128.png", "sizes": "128x128", "type": "image/png" },
+    { "src": "/assets/png/icons/mm-icon/mm-icon-256.png", "sizes": "256x256", "type": "image/png" },
+    { "src": "/assets/png/icons/mm-icon/mm-icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/assets/png/icons/mm-icon/mm-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Label your work", "url": "/label/", "icons": [{ "src": "/assets/png/icons/mm-icon/mm-icon-128.png", "sizes": "128x128" }] },
+    { "name": "Verify a file", "url": "/verify/", "icons": [{ "src": "/assets/png/icons/mm-icon/mm-icon-128.png", "sizes": "128x128" }] },
+    { "name": "Generate a label", "url": "/generate/", "icons": [{ "src": "/assets/png/icons/mm-icon/mm-icon-128.png", "sizes": "128x128" }] }
+  ]
+}

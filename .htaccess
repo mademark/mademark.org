@@ -27,12 +27,23 @@ DirectoryIndex index.html
   ExpiresByType application/ld+json "access plus 1 hour"
 </IfModule>
 
+# Block web access to the local version archive (should never be uploaded,
+# but belt-and-suspenders if it is)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^_releases(/|$) - [R=404,L]
+</IfModule>
+
 # Security headers
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
+
+# Moved pages (v2.0 audience IA, July 2026)
+RedirectMatch 301 ^/use-made-mark(/.*)?$ /label/
+RedirectMatch 301 ^/for-ai-users(/.*)?$ /use-with-ai/
 
 # Redirect www to non-www
 <IfModule mod_rewrite.c>

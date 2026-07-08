@@ -3,33 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Human Made | Made Mark</title>
-  <meta name="description" content="Human Made — a Made Mark authorship mark for content conceived and produced by people.">
-  <link rel="canonical" href="https://mademark.org/marks/human-made/">
-  <link rel="alternate" type="application/ld+json" href="/marks/human-made/index.json">
+  <title>About | Made Mark</title>
+  <meta name="description" content="Why Made Mark exists, who stewards it, and how to reach us. An open specification for content authorship disclosure.">
+  <link rel="canonical" href="https://mademark.org/about/">
   <link rel="stylesheet" href="/style.css">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Human Made | Made Mark">
-  <meta property="og:description" content="Human Made — a Made Mark authorship mark for content conceived and produced by people.">
-  <meta property="og:url" content="https://mademark.org/marks/human-made/">
+  <meta property="og:title" content="About | Made Mark">
+  <meta property="og:description" content="Why Made Mark exists, who stewards it, and how to reach us.">
+  <meta property="og:url" content="https://mademark.org/about/">
   <meta property="og:image" content="https://mademark.org/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Human Made | Made Mark">
-  <meta name="twitter:description" content="A Made Mark authorship mark for content conceived and produced by people.">
+  <meta name="twitter:title" content="About | Made Mark">
+  <meta name="twitter:description" content="Why Made Mark exists, who stewards it, and how to reach us.">
   <meta name="twitter:image" content="https://mademark.org/assets/og-image.png">
-  <script type="application/ld+json">
-  {
-    "@context": "https://mademark.org/ns",
-    "@id": "https://mademark.org/marks/human-made",
-    "@type": "mm:AuthorshipMark",
-    "mm:name": "Human Made",
-    "mm:description": "Conceived and produced by people.",
-    "schema:sameAs": "https://schema.org/CreativeWork"
-  }
-  </script>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#231F20">
   <script type="application/ld+json">
@@ -61,7 +52,7 @@
 <nav class="mobile-nav" id="mobile-nav" aria-label="Main navigation">
   <a href="/">Overview</a>
   <a href="/marks/">The three marks</a>
-  <a href="/marks/human-made/" class="nav-sub active">Human Made</a>
+  <a href="/marks/human-made/" class="nav-sub">Human Made</a>
   <a href="/marks/human-designed-ai-made/" class="nav-sub">Human Designed, AI Made</a>
   <a href="/marks/ai-made/" class="nav-sub">AI Made</a>
   <a href="/label/">Label your work</a>
@@ -70,7 +61,7 @@
   <a href="/implement/">Implement</a>
   <a href="/downloads/" class="nav-sub">Downloads</a>
   <a href="/verify/" class="nav-sub">Verify a file</a>
-  <a href="/about/">About</a>
+  <a href="/about/" class="active">About</a>
   <a href="/governance/" class="nav-sub">Governance</a>
   <a href="/colophon/" class="nav-sub">Colophon</a>
 </nav>
@@ -79,7 +70,7 @@
   <nav class="sidebar-nav" aria-label="Main navigation">
     <a href="/">Overview</a>
     <a href="/marks/">The three marks</a>
-    <a href="/marks/human-made/" class="nav-sub active">Human Made</a>
+    <a href="/marks/human-made/" class="nav-sub">Human Made</a>
     <a href="/marks/human-designed-ai-made/" class="nav-sub">Human Designed, AI Made</a>
     <a href="/marks/ai-made/" class="nav-sub">AI Made</a>
     <a href="/label/">Label your work</a>
@@ -88,7 +79,7 @@
     <a href="/implement/">Implement</a>
     <a href="/downloads/" class="nav-sub">Downloads</a>
     <a href="/verify/" class="nav-sub">Verify a file</a>
-    <a href="/about/">About</a>
+    <a href="/about/" class="active">About</a>
     <a href="/governance/" class="nav-sub">Governance</a>
     <a href="/colophon/" class="nav-sub">Colophon</a>
   </nav>
@@ -98,76 +89,39 @@
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Home</a>
       <span class="sep" aria-hidden="true">›</span>
-      <a href="/marks/">The three marks</a>
-      <span class="sep" aria-hidden="true">›</span>
-      <span aria-current="page">Human Made</span>
+      <span aria-current="page">About</span>
     </nav>
 
-    <div class="mark-tabs">
-      <a href="/marks/human-made/" class="mark-tab active">Human Made</a>
-      <a href="/marks/human-designed-ai-made/" class="mark-tab">Human Designed, AI Made</a>
-      <a href="/marks/ai-made/" class="mark-tab">AI Made</a>
+    <div class="section">
+      <h1>About Made Mark</h1>
+      <p>Made Mark answers the question no existing specification addresses: <em>how was this content made?</em> A CC license tells you what you can do with content. C2PA tells you whether a file is untampered. Made Mark tells you who — or what — made it, in words anyone can read.</p>
+      <p>The idea is seven hundred years old. A hallmark stamps who made an object and to what standard — from the silversmith's punch to the Roycroft mark. Made Mark brings that to digital content: three base marks, kept few, with optional modifiers for model, provider, and source license.</p>
+      <p>The specification is public domain. Use it, implement it, build on it.</p>
     </div>
 
     <div class="section">
-      <img src="/assets/svg/mm-icon-human-made.svg" alt="Human Made mark icon" class="mark-icon" style="margin-bottom: 24px;">
-      <h1>Human Made</h1>
-
-      <div class="canonical-uri">
-        <span class="caption">Canonical URI</span>
-        <span class="inline-code">https://mademark.org/marks/human-made</span>
-        <button class="copy-btn" onclick="copyText(this, 'https://mademark.org/marks/human-made')" aria-label="Copy canonical URI"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button>
-      </div>
-
-      <p>Conceived and produced by people. No AI tools involved in the creative work itself.</p>
-      <p class="examples">A photograph. A hand-lettered poster. A novel written without AI assistance.</p>
+      <h2>Stewardship</h2>
+      <p>Made Mark is currently administered by Daniel Richard Skrok. The openness lives in the specification (CC0); the protection lives in the signal — the name and logo are trademarked so that a Made Mark label always means what it says.</p>
+      <p>A governance policy covers administration, misuse handling, and the conditions under which stewardship would transfer to a standards body.</p>
+      <p style="margin-top: 24px;"><a href="/governance/" class="download-btn">Read the governance policy <span aria-hidden="true">→</span></a></p>
     </div>
 
     <div class="section">
-      <h2>Use this mark when</h2>
-      <div class="hairline-row">
-        <p>The creator made every significant creative decision.</p>
-      </div>
-      <div class="hairline-row">
-        <p>AI tools were not used in producing the work.</p>
-      </div>
-      <div class="hairline-row">
-        <p>The work could have been made the same way before AI existed.</p>
-      </div>
+      <h2>This site</h2>
+      <p>How mademark.org itself is made — tools, authorship, and its own Made Mark label — is documented in the colophon.</p>
+      <p style="margin-top: 24px;"><a href="/colophon/" class="download-btn">Read the colophon <span aria-hidden="true">→</span></a></p>
     </div>
 
     <div class="section">
-      <h2>Badge</h2>
-      <p>Add this to your content to display a clickable Human Made badge.</p>
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy badge HTML"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button>
-        <pre>&lt;a href="https://mademark.org/marks/human-made"
-   rel="license"&gt;
-  &lt;img src="https://mademark.org/assets/svg/mm-icon-human-made.svg"
-       alt="Human Made — Made Mark"
-       width="40" height="40"&gt;
-&lt;/a&gt;</pre>
+      <h2>Contact</h2>
+      <div class="contact-row">
+        <strong>Questions, implementations, or partnership inquiries:</strong><br>
+        <a href="mailto:hello@mademark.org">hello@mademark.org</a>
       </div>
-    </div>
-
-    <div class="section">
-      <h2>Machine-readable expression</h2>
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy JSON-LD expression"><svg class="copy-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy</span></button>
-        <pre>{
-  "@context": "https://mademark.org/ns",
-  "madeMark": {
-    "mark": "https://mademark.org/marks/human-made"
-  }
-}</pre>
+      <div class="contact-row">
+        <strong>Misuse reports:</strong><br>
+        <a href="mailto:hello@mademark.org">hello@mademark.org</a>
       </div>
-    </div>
-
-    <!-- Conversion path: most visitors arrive here from a label in the wild. -->
-    <div class="section">
-      <h2>Seen this mark on something?</h2>
-      <p>Whoever shared that content disclosed that it was made entirely by people, without AI tools. This page is what their label points to. You can disclose your own work the same way — it takes minutes.</p>
-      <p style="margin-top: 24px;"><a href="/label/" class="download-btn">Label your own work <span aria-hidden="true">&rarr;</span></a></p>
     </div>
 
     <footer class="site-footer">
@@ -186,28 +140,6 @@
 </div>
 
 <script>
-function copyText(btn, text) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(function() { flashCopied(btn); });
-  } else { fallbackCopy(text); flashCopied(btn); }
-}
-function copyCode(btn) {
-  var pre = btn.parentElement.querySelector('pre');
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(pre.textContent).then(function() { flashCopied(btn); });
-  } else { fallbackCopy(pre.textContent); flashCopied(btn); }
-}
-function fallbackCopy(text) {
-  var ta = document.createElement('textarea');
-  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-  document.body.appendChild(ta); ta.select(); document.execCommand('copy');
-  document.body.removeChild(ta);
-}
-function flashCopied(btn) {
-  var label = btn.querySelector('span') || btn;
-  var orig = label.textContent; label.textContent = 'Copied'; btn.classList.add('copied'); var _s = document.getElementById('copy-status'); if (_s) _s.textContent = 'Copied to clipboard';
-  setTimeout(function() { label.textContent = orig; btn.classList.remove('copied'); var _s = document.getElementById('copy-status'); if (_s) _s.textContent = ''; }, 2000);
-}
 (function() {
   var hamburger = document.querySelector('.hamburger');
   var nav = document.getElementById('mobile-nav');
@@ -239,7 +171,6 @@ function flashCopied(btn) {
 })();
 </script>
 
-<div class="copy-status" aria-live="polite" id="copy-status"></div>
 <script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }</script>
 </body>
 </html>

@@ -184,6 +184,20 @@ body {
   padding-left: 22px;
 }
 
+/* Sub-navigation items (children of a parent nav entry, e.g.
+   Use Made Mark → Use with AI / Generate a label). Always visible —
+   the sidebar equivalent of a dropdown, no JS required. */
+.mobile-nav .nav-sub {
+  padding-left: 44px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.mobile-nav .nav-sub.active {
+  padding-left: 42px;
+  color: var(--black);
+}
+
 /* ── PAGE LAYOUT ─────────────────────────────────── */
 
 .page-layout {
@@ -225,6 +239,22 @@ body {
   border-left: 2px solid var(--accent);
   padding-left: 14px;
   font-weight: 600;
+  color: var(--black);
+}
+
+/* Sub-navigation items — indented children of a parent entry. */
+.sidebar-nav .nav-sub {
+  font-size: 13px;
+  color: var(--muted);
+  padding-left: 32px;
+}
+
+.sidebar-nav .nav-sub:hover {
+  color: var(--black);
+}
+
+.sidebar-nav .nav-sub.active {
+  padding-left: 30px;
   color: var(--black);
 }
 
@@ -311,12 +341,15 @@ h2 {
   margin-bottom: 16px;
 }
 
+/* Proportionate to h1(40)/h2(26) at roughly the same ~0.65 step down;
+   17px lands on body-copy size so h3 reads as a heading through weight
+   and spacing, not sheer size. Normal tracking — no letter-spacing. */
 h3 {
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 600;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
+  color: var(--black);
+  line-height: 1.3;
+  margin-top: 20px;
   margin-bottom: 8px;
 }
 
@@ -449,7 +482,6 @@ code {
   padding: 24px;
   font-family: 'Source Code Pro', monospace;
   font-size: 13px;
-  overflow-x: auto;
   position: relative;
   margin-top: 16px;
   line-height: 1.6;
@@ -463,25 +495,52 @@ code {
   line-height: inherit;
   color: inherit;
   white-space: pre;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .code-block .copy-btn {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: transparent;
-  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #2d2d2d;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
-  color: #A8A8A8;
+  /* #e8e8e8 on #2d2d2d ≈ 11.4:1 — AAA ✓ */
+  color: #e8e8e8;
   font-family: 'Source Sans 3', system-ui, sans-serif;
   padding: 4px 8px;
   min-height: 32px;
   min-width: 44px;
+  transition: background 0.15s;
 }
 
 .code-block .copy-btn:hover {
-  color: #e8e8e8;
+  background: #3d3d3d;
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* Success flash: border/icon pick up the accent; label text stays
+   #e8e8e8/#fff (accent itself is graphics-only, never body text — see
+   contrast note at top of file). */
+.code-block .copy-btn.copied {
+  border-color: var(--accent);
+}
+
+.code-block .copy-btn.copied .copy-icon {
+  color: var(--accent);
+}
+
+.copy-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 /* ── INLINE CODE ─────────────────────────────────── */
@@ -499,7 +558,10 @@ code {
 /* ── LABEL DISPLAY ───────────────────────────────── */
 
 .label-display {
-  display: block;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 4px;
@@ -509,32 +571,47 @@ code {
   color: var(--ink);
   margin-top: 12px;
   margin-bottom: 16px;
-  position: relative;
-  padding-right: 80px;
 }
 
 .label-display .copy-btn {
-  position: absolute;
-  top: 50%;
-  right: 8px;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
+  position: static;
+  transform: none;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
-  color: var(--subtle);
+  /* #595959 on #ffffff ≈ 7:1 — AAA ✓ */
+  color: var(--muted);
   font-family: 'Source Sans 3', system-ui, sans-serif;
   padding: 4px 8px;
   min-height: 32px;
+  transition: background 0.15s, color 0.15s;
 }
 
 .label-display .copy-btn:hover {
-  color: var(--ink);
+  background: var(--bg);
+  /* #D42B20 on --bg ≈ 4.71:1 — AA ✓ */
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
+}
+
+.label-display .copy-btn.copied {
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
 }
 
 /* ── COPY BLOCK ──────────────────────────────────── */
 
 .copy-block {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   background: var(--bg);
   color: var(--ink);
   font-family: 'Source Code Pro', monospace;
@@ -544,26 +621,38 @@ code {
   padding: 12px 16px;
   position: relative;
   margin-top: 12px;
-  padding-right: 80px;
 }
 
 .copy-block .copy-btn {
-  position: absolute;
-  top: 50%;
-  right: 8px;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
+  position: static;
+  transform: none;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
-  color: var(--subtle);
+  /* #595959 on #ffffff ≈ 7:1 — AAA ✓ */
+  color: var(--muted);
   font-family: 'Source Sans 3', system-ui, sans-serif;
   padding: 4px 8px;
   min-height: 32px;
+  transition: background 0.15s, color 0.15s;
 }
 
 .copy-block .copy-btn:hover {
-  color: var(--ink);
+  background: var(--bg);
+  /* #D42B20 on --bg ≈ 4.71:1 — AA ✓ */
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
+}
+
+.copy-block .copy-btn.copied {
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
 }
 
 /* ── DOWNLOAD BUTTON ─────────────────────────────── */
@@ -627,6 +716,18 @@ code {
   margin: 0;
 }
 
+/* Inline text link within body copy — underline signals "link" at rest
+   (color alone isn't a sufficient indicator per WCAG 1.4.1); hover shifts
+   to accent-ink, same AA-safe red used by download/copy button hovers. */
+.text-link {
+  color: var(--ink);
+}
+
+.text-link:hover {
+  /* #D42B20 on #ffffff ≈ 5.04:1 — AA ✓ */
+  color: var(--accent-ink);
+}
+
 /* ── MARK CARDS ──────────────────────────────────── */
 
 .mark-cards {
@@ -686,6 +787,137 @@ a.mark-card:active {
   word-break: break-all;
 }
 
+/* ── CHOICE CARDS (/use-made-mark/ chooser) ──────── */
+/* One card per way to use Made Mark. The grid auto-fills at a 280px
+   minimum, so adding an option is just another <a class="choice-card">
+   — no CSS changes until ~6 options, at which point group cards under
+   audience headings (For creators / For developers), one .choice-grid
+   per group. */
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.choice-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 32px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+/* Hover/active only on link cards — planned-format cards are plain divs
+   and must not invite clicks. */
+a.choice-card:hover {
+  background: var(--bg);
+  border-color: var(--ink);
+}
+
+a.choice-card:active {
+  border-color: var(--accent);
+}
+
+/* Recommended path: heavier border, padding trimmed 1px so interior
+   content stays aligned with 1px-bordered siblings. */
+.choice-card-primary {
+  border: 2px solid var(--ink);
+  padding: 31px 23px;
+}
+
+.choice-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.choice-badge::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Grey dot for statuses that shouldn't draw the eye (Planned). */
+.choice-badge-muted::before {
+  background: var(--subtle);
+}
+
+.choice-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.choice-desc {
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.choice-meta {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+/* Button-styled closer; margin-top:auto pins it to the card bottom so
+   CTAs align across cards of unequal content length. */
+.choice-cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--white);
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  min-height: 44px;
+}
+
+a.choice-card:hover .choice-cta {
+  /* #D42B20 on --bg ≈ 4.71:1 — AA ✓ */
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
+}
+
+/* Primary CTA is solid ink — the one filled element on the page.
+   #ffffff on #231F20: 16.3:1 — AAA ✓ */
+.choice-cta-primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--white);
+}
+
+a.choice-card:hover .choice-cta-primary {
+  background: var(--black);
+  border-color: var(--accent);
+  color: var(--white);
+}
+
 /* ── NUMBERED CIRCLE ─────────────────────────────── */
 
 .numbered-circle {
@@ -713,6 +945,31 @@ a.mark-card:active {
 }
 
 .numbered-row:last-of-type {
+  border-bottom: none;
+}
+
+/* ── STEP LIST ───────────────────────────────────── */
+/* Semantic <ol> version of numbered-row for sequential
+   instructions — screen readers announce item count and
+   position; the visible circles are aria-hidden. Keep
+   role="list" on the <ol>: list-style:none strips list
+   semantics in Safari/VoiceOver without it. */
+
+.step-list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.step-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.step-list li:last-child {
   border-bottom: none;
 }
 
@@ -856,18 +1113,33 @@ a.mark-card:active {
 }
 
 .canonical-uri .copy-btn {
-  background: transparent;
-  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
-  color: var(--subtle);
+  /* #595959 on #ffffff ≈ 7:1 — AAA ✓ */
+  color: var(--muted);
   font-family: 'Source Sans 3', system-ui, sans-serif;
   padding: 4px 8px;
   min-height: 32px;
+  transition: background 0.15s, color 0.15s;
 }
 
 .canonical-uri .copy-btn:hover {
-  color: var(--ink);
+  background: var(--bg);
+  /* #D42B20 on --bg ≈ 4.71:1 — AA ✓ */
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
+}
+
+.canonical-uri .copy-btn.copied {
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
 }
 
 /* ── FIELD ROWS ──────────────────────────────────── */
@@ -1071,9 +1343,15 @@ a.mark-card:active {
   color: var(--black);
 }
 
-.contact-row span {
+.contact-row span,
+.contact-row a {
   font-size: 14px;
   color: var(--muted);
+}
+
+.contact-row a:hover {
+  /* #D42B20 on #ffffff ≈ 5.04:1 — AA ✓ */
+  color: var(--accent-ink);
 }
 
 /* ── FOOTER ──────────────────────────────────────── */
@@ -1442,6 +1720,14 @@ select:focus-visible {
     padding: 24px;
   }
 
+  .choice-card {
+    padding: 24px;
+  }
+
+  .choice-card-primary {
+    padding: 23px;
+  }
+
   .section-gap {
     margin-top: 40px;
   }
@@ -1469,6 +1755,15 @@ select:focus-visible {
 
   .download-btn {
     min-height: 44px;
+  }
+
+  .code-block .copy-btn,
+  .copy-block .copy-btn,
+  .label-display .copy-btn,
+  .canonical-uri .copy-btn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 12px;
   }
 
   .mobile-nav a {

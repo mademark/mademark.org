@@ -341,12 +341,15 @@ h2 {
   margin-bottom: 16px;
 }
 
+/* Proportionate to h1(40)/h2(26) at roughly the same ~0.65 step down;
+   17px lands on body-copy size so h3 reads as a heading through weight
+   and spacing, not sheer size. Normal tracking — no letter-spacing. */
 h3 {
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 600;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
+  color: var(--black);
+  line-height: 1.3;
+  margin-top: 20px;
   margin-bottom: 8px;
 }
 

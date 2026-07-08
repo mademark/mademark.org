@@ -56,6 +56,18 @@
     .verify-result .result-headline img { width: 32px; height: 32px; flex-shrink: 0; }
     .verify-result p { font-size: 15px; }
   </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#231F20">
+  <script type="application/ld+json">
+  {
+    "@context": "https://mademark.org/ns",
+    "@type": "CreativeWork",
+    "madeMark": {
+      "mark": "https://mademark.org/marks/human-designed-ai-made",
+      "provider": "Anthropic"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -140,6 +152,17 @@
         <div class="verify-result" id="c2pa-result" aria-live="polite"></div>
         <p class="caption" style="margin-top: 16px;">C2PA verification uses the open-source <a href="https://opensource.contentauthenticity.org/" class="text-link" target="_blank" rel="noopener noreferrer">Content Authenticity Initiative</a> toolkit, loaded on demand. For a second opinion, try <a href="https://contentcredentials.org/verify" class="text-link" target="_blank" rel="noopener noreferrer">contentcredentials.org/verify</a>.</p>
       </div>
+    </div>
+
+    <div class="section">
+      <h2 id="val-heading">Validate a label</h2>
+      <p>Implementing Made Mark? Paste a plain-language label (<span class="inline-code">MM · Human Made · …</span>) or a JSON-LD block and check it against the specification.</p>
+      <div class="gen-input-group" style="margin-top: 16px;">
+        <label for="val-input">Label or JSON-LD</label>
+        <textarea id="val-input" rows="5" style="display:block;width:100%;border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:14px;color:var(--ink);font-family:'Source Code Pro',monospace;background:var(--white);resize:vertical;" placeholder="MM · Human Designed, AI Made · Claude Sonnet 4.6 · Anthropic"></textarea>
+      </div>
+      <p style="margin-top: 12px;"><button class="download-btn" id="val-btn" type="button">Validate</button></p>
+      <div class="verify-result" id="val-result" hidden aria-live="polite"></div>
     </div>
 
     <footer class="site-footer">
@@ -394,7 +417,96 @@
   });
   dropZone.addEventListener('drop', function (e) { inspect(e.dataTransfer.files[0]); });
 
-  window.MMVerify = { readMadeMark: readMadeMark };
+  /* ── label validator ── */
+  var MARK_URIS = {
+    'https://mademark.org/marks/human-made': 'Human Made',
+    'https://mademark.org/marks/human-designed-ai-made': 'Human Designed, AI Made',
+    'https://mademark.org/marks/ai-made': 'AI Made'
+  };
+  var MARK_NAMES = ['Human Made', 'Human Designed, AI Made', 'AI Made'];
+
+  function validateLabel(input) {
+    var errors = [], warnings = [], info = [];
+    input = input.trim();
+    if (!input) return { ok: false, errors: ['Nothing to validate.'], warnings: [], info: [] };
+
+    if (input[0] === '{' || input.indexOf('<script') === 0) {
+      // JSON-LD path
+      var raw = input.replace(/^<script[^>]*>/i, '').replace(/<\/script>$/i, '').trim();
+      var obj;
+      try { obj = JSON.parse(raw); } catch (e) {
+        return { ok: false, errors: ['Not valid JSON: ' + e.message], warnings: [], info: [] };
+      }
+      var node = obj.madeMark || obj;
+      if (!obj.madeMark && obj['@context'] !== 'https://mademark.org/ns') {
+        warnings.push('Wrap the fields in a "madeMark" object on a CreativeWork, as shown on the Implement page.');
+      }
+      if (obj['@context'] && obj['@context'] !== 'https://mademark.org/ns') {
+        errors.push('"@context" should be "https://mademark.org/ns" (found "' + obj['@context'] + '").');
+      } else if (!obj['@context']) {
+        warnings.push('Missing "@context": "https://mademark.org/ns" — without it, parsers can\'t resolve the vocabulary.');
+      }
+      if (!node.mark) {
+        errors.push('Missing required "mark" field. It must be one of the three canonical URIs.');
+      } else if (!MARK_URIS[node.mark]) {
+        var almost = String(node.mark).replace(/^http:/, 'https:').replace(/\/$/, '');
+        if (MARK_URIS[almost]) errors.push('"mark" is nearly right — use exactly "' + almost + '" (https, no trailing slash).');
+        else errors.push('"mark" is not a canonical Made Mark URI. Valid values: ' + Object.keys(MARK_URIS).join(' · '));
+      } else {
+        info.push('Mark: MM · ' + MARK_URIS[node.mark]);
+      }
+      ['model', 'provider', 'sourceLicense'].forEach(function (k) {
+        if (node[k]) info.push(k + ': ' + node[k]);
+      });
+      Object.keys(node).forEach(function (k) {
+        if (['mark', 'model', 'provider', 'sourceLicense', '@context', '@type', 'madeMark'].indexOf(k) === -1) {
+          warnings.push('Unknown field "' + k + '" — not part of the v1.0 vocabulary (parsers will ignore it).');
+        }
+      });
+    } else {
+      // Plain-language label path
+      if (/^mm\s/i.test(input) && input.indexOf('·') === -1) {
+        errors.push('Fields must be separated by " · " (middle dot), not spaces, hyphens, or pipes.');
+      }
+      var parts = input.split(/\s*·\s*/);
+      if (parts[0] !== 'MM') {
+        errors.push(parts[0].toUpperCase() === 'MM'
+          ? 'The system identifier must be uppercase "MM" (found "' + parts[0] + '").'
+          : 'A label must start with the system identifier "MM".');
+      }
+      var markName = parts[1] || '';
+      if (!markName) {
+        errors.push('Missing the authorship mark — the one required field. One of: ' + MARK_NAMES.join(' · '));
+      } else if (MARK_NAMES.indexOf(markName) === -1) {
+        var ci = MARK_NAMES.filter(function (n) { return n.toLowerCase() === markName.toLowerCase(); })[0];
+        if (ci) errors.push('Mark names are case-sensitive: use "' + ci + '" (found "' + markName + '").');
+        else errors.push('"' + markName + '" is not one of the three marks: ' + MARK_NAMES.join(' · '));
+      } else {
+        info.push('Mark: ' + markName);
+      }
+      var optional = parts.slice(2);
+      if (optional.length > 3) warnings.push('More than three optional fields — v1.0 defines model, provider, and source license.');
+      var roles = ['model', 'provider', 'source license'];
+      optional.slice(0, 3).forEach(function (v, i) { if (v) info.push('Read as ' + roles[i] + ': ' + v); });
+    }
+    return { ok: errors.length === 0, errors: errors, warnings: warnings, info: info };
+  }
+
+  var valBtn = document.getElementById('val-btn');
+  var valResult = document.getElementById('val-result');
+  valBtn.addEventListener('click', function () {
+    var r = validateLabel(document.getElementById('val-input').value);
+    var html = r.ok
+      ? '<div class="result-headline">Valid Made Mark label</div>'
+      : '<div class="result-headline">Not valid yet</div>';
+    r.errors.forEach(function (m) { html += '<p style="margin-top: 8px;">✕ ' + esc(m) + '</p>'; });
+    r.warnings.forEach(function (m) { html += '<p style="margin-top: 8px;" class="caption">△ ' + esc(m) + '</p>'; });
+    if (r.ok && r.info.length) html += '<p style="margin-top: 8px;" class="caption">' + r.info.map(esc).join(' · ') + '</p>';
+    valResult.innerHTML = html;
+    valResult.hidden = false;
+  });
+
+  window.MMVerify = { readMadeMark: readMadeMark, validateLabel: validateLabel };
 })();
 
 (function () {
@@ -428,5 +540,6 @@
 })();
 </script>
 
+<script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }</script>
 </body>
 </html>

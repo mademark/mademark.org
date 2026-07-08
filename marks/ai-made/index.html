@@ -29,6 +29,18 @@
     "mm:description": "Conceived and produced primarily by AI."
   }
   </script>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#231F20">
+  <script type="application/ld+json">
+  {
+    "@context": "https://mademark.org/ns",
+    "@type": "CreativeWork",
+    "madeMark": {
+      "mark": "https://mademark.org/marks/human-designed-ai-made",
+      "provider": "Anthropic"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -228,5 +240,6 @@ function flashCopied(btn) {
 </script>
 
 <div class="copy-status" aria-live="polite" id="copy-status"></div>
+<script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }</script>
 </body>
 </html>

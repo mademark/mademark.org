@@ -21,6 +21,18 @@
   <meta name="twitter:title" content="Label your work | Made Mark">
   <meta name="twitter:description" content="Pick your path, then your format. Every method produces the same label.">
   <meta name="twitter:image" content="https://mademark.org/assets/og-image.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#231F20">
+  <script type="application/ld+json">
+  {
+    "@context": "https://mademark.org/ns",
+    "@type": "CreativeWork",
+    "madeMark": {
+      "mark": "https://mademark.org/marks/human-designed-ai-made",
+      "provider": "Anthropic"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -213,5 +225,6 @@
 })();
 </script>
 
+<script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }</script>
 </body>
 </html>

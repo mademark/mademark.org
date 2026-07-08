@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Label physical goods | Made Mark</title>
+  <meta name="description" content="Mark physical objects with Made Mark: production vectors for engraving and embossing, a QR tag that links the object to its authorship mark, and printable sticker sheets.">
+  <link rel="canonical" href="https://mademark.org/label/physical/">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Label physical goods | Made Mark">
+  <meta property="og:description" content="Production vectors, QR tags, and sticker sheets — the hallmark returning to objects.">
+  <meta property="og:url" content="https://mademark.org/label/physical/">
+  <meta property="og:image" content="https://mademark.org/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Label physical goods | Made Mark">
+  <meta name="twitter:description" content="Production vectors, QR tags, and sticker sheets for marking objects.">
+  <meta name="twitter:image" content="https://mademark.org/assets/og-image.png">
+  <style>
+    /* Page-scoped additions — uses existing tokens from /style.css. */
+    .tool-status { margin-top: 12px; font-size: 14px; color: var(--muted); }
+    .qr-preview-row {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .qr-preview-row canvas {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      image-rendering: pixelated;
+    }
+    /* Print sticker sheet: hidden on screen, becomes the whole page in print */
+    .print-sheet { display: none; }
+    @media print {
+      .site-header, .mobile-nav, .page-layout, .skip-link { display: none !important; }
+      .print-sheet {
+        display: grid !important;
+        grid-template-columns: repeat(5, 25mm);
+        gap: 8mm;
+        padding: 10mm;
+      }
+      .print-sheet .sticker {
+        width: 25mm;
+        height: 25mm;
+        border: 0.2mm dashed #999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .print-sheet .sticker img { width: 19mm; height: 19mm; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="/" class="logo-link">
+      <img src="/assets/svg/mm-logo-dark.svg" alt="Made Mark" class="logo">
+    </a>
+    <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Main navigation">
+  <a href="/">Overview</a>
+  <a href="/marks/">The three marks</a>
+  <a href="/marks/human-made/" class="nav-sub">Human Made</a>
+  <a href="/marks/human-designed-ai-made/" class="nav-sub">Human Designed, AI Made</a>
+  <a href="/marks/ai-made/" class="nav-sub">AI Made</a>
+  <a href="/label/" class="active">Label your work</a>
+  <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
+  <a href="/generate/" class="nav-sub">Generate a label</a>
+  <a href="/implement/">Implement</a>
+  <a href="/downloads/" class="nav-sub">Downloads</a>
+  <a href="/verify/" class="nav-sub">Verify a file</a>
+  <a href="/about/">About</a>
+  <a href="/governance/" class="nav-sub">Governance</a>
+  <a href="/colophon/" class="nav-sub">Colophon</a>
+</nav>
+
+<div class="page-layout">
+  <nav class="sidebar-nav" aria-label="Main navigation">
+    <a href="/">Overview</a>
+    <a href="/marks/">The three marks</a>
+    <a href="/marks/human-made/" class="nav-sub">Human Made</a>
+    <a href="/marks/human-designed-ai-made/" class="nav-sub">Human Designed, AI Made</a>
+    <a href="/marks/ai-made/" class="nav-sub">AI Made</a>
+    <a href="/label/" class="active">Label your work</a>
+    <a href="/use-with-ai/" class="nav-sub">Use with AI</a>
+    <a href="/generate/" class="nav-sub">Generate a label</a>
+    <a href="/implement/">Implement</a>
+    <a href="/downloads/" class="nav-sub">Downloads</a>
+    <a href="/verify/" class="nav-sub">Verify a file</a>
+    <a href="/about/">About</a>
+    <a href="/governance/" class="nav-sub">Governance</a>
+    <a href="/colophon/" class="nav-sub">Colophon</a>
+  </nav>
+
+  <main class="content" id="main-content" role="main">
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <a href="/label/">Label your work</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <span aria-current="page">Physical goods</span>
+    </nav>
+
+    <div class="section">
+      <h1>Label physical goods</h1>
+      <p>The hallmark returning to objects. A physical Made Mark has the same two layers as a digital one: the <strong>visual mark</strong> — engraved, embossed, molded, or stickered onto the object — and a <strong>machine layer</strong>: a QR tag that resolves to the mark's canonical page, so anyone with a camera can read what the mark discloses.</p>
+    </div>
+
+    <div class="section">
+      <h2 id="mark-choice">1 · How was this object made? <span class="caption">(required)</span></h2>
+      <div class="gen-cards" role="radiogroup" aria-labelledby="mark-choice">
+        <button class="gen-card" type="button" role="radio" aria-checked="false" data-mark="human-made">
+          <img src="/assets/svg/mm-icon-human-made.svg" alt="" aria-hidden="true">
+          <span class="gen-card-text"><strong>Human Made</strong><span>Conceived and produced by people, without AI tools.</span></span>
+        </button>
+        <button class="gen-card" type="button" role="radio" aria-checked="false" data-mark="human-designed-ai-made">
+          <img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" aria-hidden="true">
+          <span class="gen-card-text"><strong>Human Designed, AI Made</strong><span>A person shaped the design — AI or automated systems produced it.</span></span>
+        </button>
+        <button class="gen-card" type="button" role="radio" aria-checked="false" data-mark="ai-made">
+          <img src="/assets/svg/mm-icon-ai-made.svg" alt="" aria-hidden="true">
+          <span class="gen-card-text"><strong>AI Made</strong><span>Conceived and produced primarily by AI.</span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>2 · Marking kit</h2>
+      <p>The mark as a production-ready vector, plus the rules that keep it legible at object scale. Laser engravers, embossing dies, and cutting plotters all accept SVG.</p>
+      <div class="download-row">
+        <a class="download-btn" id="dl-svg" href="#" download>Mark vector (SVG)</a>
+        <a class="download-btn" id="dl-png" href="#" download>Mark raster (PNG, 512px)</a>
+      </div>
+      <div class="field-rows">
+        <div class="field-row">
+          <span class="inline-code">Minimum size</span>
+          <span class="field-row-role">10 mm printed · 6 mm engraved or embossed — below that, the inner glyph closes up</span>
+        </div>
+        <div class="field-row">
+          <span class="inline-code">Clear space</span>
+          <span class="field-row-role">Keep at least 25% of the mark's width free on all sides</span>
+        </div>
+        <div class="field-row">
+          <span class="inline-code">Color</span>
+          <span class="field-row-role">Monochrome. Engrave, deboss, or print in a single color — never recolor or restyle (CC BY-ND 4.0)</span>
+        </div>
+        <div class="field-row">
+          <span class="inline-code">Placement</span>
+          <span class="field-row-role">Where a maker's mark traditionally sits: the base, the back, the underside — near your own mark if you have one</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>3 · QR tag <span class="caption">(the machine layer for objects)</span></h2>
+      <p>A QR code that resolves to the mark's canonical URI. Engrave or print it beside the mark — anyone with a phone camera reads exactly what the mark discloses. Use it at 12 mm or larger, and keep the quiet zone (the empty border baked into the downloads) clear.</p>
+      <div class="qr-preview-row">
+        <canvas id="qr-canvas" width="0" height="0" role="img" aria-label="QR code preview linking to the selected mark's page" hidden></canvas>
+      </div>
+      <p class="tool-status" id="qr-status" aria-live="polite">Choose a mark in step 1 to generate the tag.</p>
+      <div class="download-row">
+        <button class="download-btn" id="dl-qr-svg" type="button" disabled>QR tag (SVG)</button>
+        <button class="download-btn" id="dl-qr-png" type="button" disabled>QR tag (PNG)</button>
+        <button class="download-btn" id="dl-lockup" type="button" disabled>Mark + QR lockup (SVG)</button>
+      </div>
+      <p class="caption" style="margin-top: 12px;">The lockup pairs the mark and its QR tag in one engraving-ready file. The QR encodes the canonical URI — <span class="inline-code" id="qr-uri">—</span> — which is stable and will never change.</p>
+    </div>
+
+    <div class="section">
+      <h2>4 · Sticker sheet</h2>
+      <p>The fastest way onto an object. Prints thirty 25&nbsp;mm stickers with dashed cut lines — use full-sheet adhesive paper, or any label stock and cut by hand.</p>
+      <p style="margin-top: 16px;"><button class="btn-pack" id="print-btn" type="button" disabled>Print sticker sheet</button></p>
+      <p class="caption" style="margin-top: 12px;">Print at 100% scale (no “fit to page”) so the 25 mm sizing holds.</p>
+    </div>
+
+    <footer class="site-footer">
+      <p>Made Mark ™ · mademark.org</p>
+      <p>An open specification for content authorship disclosure.</p>
+      <p>Specification: CC0 · Name and logo: Trademarks of Daniel Richard Skrok</p>
+      <p>v1.0 — Published June 2026</p>
+      <p class="footer-mark"><a href="/marks/human-designed-ai-made/" class="mm-attribution"><img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" width="16" height="16" aria-hidden="true"> Human Designed, AI Made</a></p>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/company/mademark/" target="_blank" rel="noopener noreferrer" aria-label="Made Mark on LinkedIn (opens in new tab)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.712-2.165 1.193V6.169H6.249c.032.682 0 7.225 0 7.225h2.401z"/></svg> LinkedIn</a>
+        <a href="https://github.com/mademark" target="_blank" rel="noopener noreferrer" aria-label="Made Mark on GitHub (opens in new tab)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> GitHub</a>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<!-- Print-only sticker sheet: populated by JS with the selected mark -->
+<div class="print-sheet" id="print-sheet" aria-hidden="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script>
+/* ── Made Mark physical marking kit ──────────────────────────────────
+   QR tags encode the mark's canonical URI (error correction Q, for
+   engraving robustness). The lockup composes the mark's own SVG paths
+   with the QR modules into one engraving-ready vector. QR encoding via
+   qrcode-generator (MIT, no dependencies); everything else is local. */
+
+(function () {
+  'use strict';
+
+  var MARK_LABELS = {
+    'human-made': 'Human Made',
+    'human-designed-ai-made': 'Human Designed, AI Made',
+    'ai-made': 'AI Made'
+  };
+  var INK = '#231F20';
+  var state = { mark: null, qr: null };
+
+  function uriFor(slug) { return 'https://mademark.org/marks/' + slug; }
+
+  function buildQr(slug) {
+    var qr = window.qrcode(0, 'Q'); // auto type, ECC Q for physical wear
+    qr.addData(uriFor(slug));
+    qr.make();
+    return qr;
+  }
+
+  /* QR as standalone SVG: modules as rects, 4-module quiet zone. */
+  function qrSvg(qr) {
+    var n = qr.getModuleCount(), quiet = 4, total = n + quiet * 2;
+    var rects = '';
+    for (var r = 0; r < n; r++) {
+      for (var c = 0; c < n; c++) {
+        if (qr.isDark(r, c)) rects += '<rect x="' + (c + quiet) + '" y="' + (r + quiet) + '" width="1" height="1"/>';
+      }
+    }
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + total + ' ' + total + '" shape-rendering="crispEdges">' +
+      '<rect width="' + total + '" height="' + total + '" fill="white"/>' +
+      '<g fill="' + INK + '">' + rects + '</g></svg>';
+  }
+
+  /* Mark + QR lockup: icon paths (512 box) + gap + QR scaled to 512. */
+  function lockupSvg(iconInner, qr) {
+    var n = qr.getModuleCount(), quiet = 4, total = n + quiet * 2;
+    var scale = 512 / total;
+    var rects = '';
+    for (var r = 0; r < n; r++) {
+      for (var c = 0; c < n; c++) {
+        if (qr.isDark(r, c)) rects += '<rect x="' + (c + quiet) + '" y="' + (r + quiet) + '" width="1" height="1"/>';
+      }
+    }
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1088 512" shape-rendering="crispEdges">' +
+      '<g>' + iconInner + '</g>' +
+      '<g transform="translate(576 0) scale(' + scale + ')">' +
+      '<rect width="' + total + '" height="' + total + '" fill="white"/>' +
+      '<g fill="' + INK + '">' + rects + '</g></g></svg>';
+  }
+
+  function download(name, content, type) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([content], { type: type }));
+    a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
+  }
+
+  function drawQrCanvas(qr) {
+    var cv = document.getElementById('qr-canvas');
+    var n = qr.getModuleCount(), quiet = 4, cell = 6;
+    var total = (n + quiet * 2) * cell;
+    cv.width = total; cv.height = total;
+    cv.style.width = Math.min(total, 220) + 'px';
+    var ctx = cv.getContext('2d');
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, total, total);
+    ctx.fillStyle = INK;
+    for (var r = 0; r < n; r++) {
+      for (var c = 0; c < n; c++) {
+        if (qr.isDark(r, c)) ctx.fillRect((c + quiet) * cell, (r + quiet) * cell, cell, cell);
+      }
+    }
+    cv.hidden = false;
+  }
+
+  function refresh() {
+    var slug = state.mark;
+    if (!slug) return;
+    state.qr = buildQr(slug);
+    drawQrCanvas(state.qr);
+    document.getElementById('qr-status').textContent = 'Tag resolves to the ' + MARK_LABELS[slug] + ' mark page.';
+    document.getElementById('qr-uri').textContent = uriFor(slug);
+    document.getElementById('dl-svg').href = '/assets/svg/mm-icon-' + slug + '.svg';
+    document.getElementById('dl-svg').setAttribute('download', 'mademark-' + slug + '.svg');
+    document.getElementById('dl-png').href = '/assets/png/icons/mm-icon-' + slug + '/mm-icon-' + slug + '-512.png';
+    document.getElementById('dl-png').setAttribute('download', 'mademark-' + slug + '-512.png');
+    ['dl-qr-svg', 'dl-qr-png', 'dl-lockup', 'print-btn'].forEach(function (id) {
+      document.getElementById(id).disabled = false;
+    });
+    // Populate the print-only sticker sheet: 30 × 25 mm
+    var sheet = document.getElementById('print-sheet');
+    sheet.innerHTML = '';
+    for (var i = 0; i < 30; i++) {
+      var d = document.createElement('div');
+      d.className = 'sticker';
+      d.innerHTML = '<img src="/assets/svg/mm-icon-' + slug + '.svg" alt="">';
+      sheet.appendChild(d);
+    }
+  }
+
+  document.querySelectorAll('.gen-card[data-mark]').forEach(function (card) {
+    card.addEventListener('click', function () {
+      document.querySelectorAll('.gen-card[data-mark]').forEach(function (c) {
+        c.classList.remove('selected'); c.setAttribute('aria-checked', 'false');
+      });
+      card.classList.add('selected'); card.setAttribute('aria-checked', 'true');
+      state.mark = card.getAttribute('data-mark');
+      refresh();
+    });
+  });
+
+  document.getElementById('dl-qr-svg').addEventListener('click', function () {
+    download('mademark-qr-' + state.mark + '.svg', qrSvg(state.qr), 'image/svg+xml');
+  });
+
+  document.getElementById('dl-qr-png').addEventListener('click', function () {
+    var qr = state.qr, n = qr.getModuleCount(), quiet = 4, cell = 32;
+    var total = (n + quiet * 2) * cell;
+    var cv = document.createElement('canvas'); cv.width = total; cv.height = total;
+    var ctx = cv.getContext('2d');
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, total, total);
+    ctx.fillStyle = INK;
+    for (var r = 0; r < n; r++) {
+      for (var c = 0; c < n; c++) {
+        if (qr.isDark(r, c)) ctx.fillRect((c + quiet) * cell, (r + quiet) * cell, cell, cell);
+      }
+    }
+    cv.toBlob(function (blob) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'mademark-qr-' + state.mark + '.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
+    }, 'image/png');
+  });
+
+  document.getElementById('dl-lockup').addEventListener('click', function () {
+    var slug = state.mark, qr = state.qr;
+    fetch('/assets/svg/mm-icon-' + slug + '.svg')
+      .then(function (r) { return r.text(); })
+      .then(function (svg) {
+        var m = svg.match(/<svg[^>]*>([\s\S]*)<\/svg>/);
+        if (!m) throw new Error('Could not read the mark vector.');
+        download('mademark-lockup-' + slug + '.svg', lockupSvg(m[1], qr), 'image/svg+xml');
+      })
+      .catch(function (err) {
+        document.getElementById('qr-status').textContent = err.message || 'Could not build the lockup.';
+      });
+  });
+
+  document.getElementById('print-btn').addEventListener('click', function () { window.print(); });
+
+  window.MMPhysical = { buildQr: buildQr, qrSvg: qrSvg, lockupSvg: lockupSvg };
+})();
+
+(function () {
+  var hamburger = document.querySelector('.hamburger');
+  var nav = document.getElementById('mobile-nav');
+  function openMenu() {
+    nav.classList.add('open'); hamburger.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', 'Close navigation menu');
+    nav.querySelector('a').focus();
+  }
+  function closeMenu() {
+    nav.classList.remove('open'); hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Open navigation menu');
+  }
+  hamburger.addEventListener('click', function () {
+    nav.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', closeMenu); });
+  document.addEventListener('keydown', function (e) {
+    if (!nav.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeMenu(); hamburger.focus(); return; }
+    if (e.key === 'Tab') {
+      var els = [hamburger].concat(Array.from(nav.querySelectorAll('a')));
+      var first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

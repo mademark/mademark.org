@@ -1,103 +1,131 @@
 ---
 name: made-mark
-description: Applies Made Mark authorship labels (https://mademark.org) to deliverables Claude produces. Use whenever Claude creates a standalone piece of content the user might publish, share, or present — documents, articles, code files, images, presentations, or website copy. Not used for ordinary in-chat conversation or advice that isn't itself a deliverable.
+description: Appends a Made Mark authorship-disclosure label to documents, articles, reports, marketing copy, code files, or any other standalone deliverable Claude produces that the user could publish or share elsewhere. Use this whenever a response is heading toward a finished, shareable artifact — even if the user never mentions "Made Mark," "attribution," or "authorship" by name. Do not use it for ordinary back-and-forth chat, brainstorming, code review, debugging, data analysis, or anything the user flags as a draft.
 ---
 
 # Made Mark
 
 Made Mark is an open specification for content authorship disclosure
-(https://mademark.org). It defines three marks:
+(https://mademark.org). It exists because readers increasingly can't tell
+how something was made — a short label at the end of a piece answers that
+plainly, the way a photo credit or a hallmark on silverware does.
 
-- **Human Made** — the person wrote or created this themselves. Claude only
-  discussed, reviewed, or gave feedback; no part of the delivered content
-  came from Claude.
-- **Human Designed, AI Made** — the person directed the intent, structure,
-  goals, or constraints, and Claude generated the actual output.
-- **AI Made** — Claude generated this with no specific human creative
-  direction over this particular output (for example, a generic filler
-  example the person didn't specify the content of).
+This skill covers the text-based deliverables Claude writes directly. For
+images, video, and audio files, the label has to be embedded in the file's
+metadata, which a language model can't do to raw bytes — those go through
+the browser tools at https://mademark.org/label/ instead (see "Media
+files" below).
 
-The specification is CC0. The name, wordmark, and mark icons are trademarks
-of Daniel Richard Skrok — see https://mademark.org/governance/ before
-modifying or redistributing the marks themselves.
+## When to label
 
-## When to apply a label
+Add a label when the response is a **standalone deliverable** — something
+the user could plausibly copy out, publish, or hand to someone else:
+articles, blog posts, reports, marketing or website copy, documentation,
+and code files or scripts meant to be shared or shipped.
 
-Apply a mark when the conversation produces something the person is likely
-to publish, share, save, or present as finished work on its own:
+Don't add one for ordinary conversation: chat replies, brainstorming,
+code review or debugging help, data-analysis walkthroughs, or anything the
+user has explicitly called a draft. Labeling every message would make the
+signal meaningless — it only matters because it's selective.
 
-- Documents, reports, essays, articles, blog posts
-- Code files, scripts, components
-- Presentations and slide decks
-- Images or generated media
-- Website or marketing copy
+If genuinely unsure whether something counts as a deliverable, lean toward
+*not* labeling. A missing label costs nothing; a label on casual chat
+cheapens the ones that matter.
 
-Do not apply a label to:
+## Choosing the mark
 
-- Ordinary chat replies, explanations, or advice
-- Brainstorming, outlines, or drafts explicitly marked as drafts
-- Anything the person says they don't want labeled
+Three marks exist. The choice depends on how much creative direction the
+user gave for *this specific piece*:
 
-If uncertain whether a mark applies, ask once rather than guessing.
+- **Human Designed, AI Made** — the default. The user gave an outline, key
+  points, specific instructions, or iterative feedback that shaped what got
+  produced.
+- **AI Made** — the user gave a broad, open-ended request with no specific
+  creative direction on this particular output (e.g. "write me something
+  about X" with nothing further).
+- **Human Made** — only when labeling content the *user* wrote themselves
+  and Claude merely reviewed or commented. Claude did not generate the
+  delivered text. Rare in normal use; included for completeness.
 
-## Choosing the right mark
-
-Default to **Human Designed, AI Made** for anything Claude generated from
-the person's direction — this is the common case for AI-assisted work.
-
-Use **Human Made** only when Claude did not generate the delivered content
-(e.g. Claude proofread or commented on the person's own writing).
-
-Use **AI Made** only when there was no specific creative direction for this
-output's content.
+When torn between the first two, ask: *did the user shape the intent, or
+just the topic?* Shaped intent → Human Designed, AI Made.
 
 ## Label format
 
-Short form:
-`MM · [Mark Name]`
+Append this at the end of the deliverable, on its own line(s):
 
-Full form (include tool/provider when useful, e.g. in a colophon or footer):
-`MM · [Mark Name] · [Model] · [Provider]`
+```
+MM · <mark>
+Learn more: https://mademark.org
+```
 
-Example: `MM · Human Designed, AI Made · Claude Sonnet 5 · Anthropic`
+`<mark>` is `Human Designed, AI Made` or `AI Made` (see above).
 
-## Placement
+**Example — user gave an outline for a blog post:**
 
-- **Documents (docx, md, articles):** final line or a footer/colophon.
+```
+...and that's why the migration paid off within the first quarter.
+
+MM · Human Designed, AI Made
+Learn more: https://mademark.org
+```
+
+**Example — user asked only for "a short poem about autumn":**
+
+```
+...and the last leaf lets go.
+
+MM · AI Made
+Learn more: https://mademark.org
+```
+
+When model and provider are worth recording (a colophon, a documentation
+footer), the full form can be used:
+
+```
+MM · Human Designed, AI Made · Claude Sonnet 4.6 · Anthropic
+Learn more: https://mademark.org
+```
+
+## Placement by deliverable type
+
+- **Documents, articles, reports:** the final line, or a footer/colophon.
 - **Code files:** a single comment line near the top of the file.
-- **Presentations:** final slide, small footer text.
-- **Web/HTML output:** footer, plus optionally the JSON-LD snippet from
-  https://mademark.org/generate/ in the `<head>`.
-- **Images, video, and other binary media (Claude Code only):** don't stop
-  at a caption. Run `scripts/embed-mark.sh` to embed the mark as real,
-  machine-readable XMP metadata inside the file itself — see "Embedding
-  metadata in media files" below.
+- **Web / HTML output:** in the footer, and optionally the JSON-LD block
+  from https://mademark.org/generate/ in the page `<head>` so the label is
+  machine-readable too.
 
-## Embedding metadata in media files (Claude Code only)
+## Media files (images, video, audio)
 
-Claude Code has filesystem and shell access, so when a deliverable is a
-binary media file (image, video, PDF) that ends up saved to disk, embed the
-mark directly instead of only mentioning it in a caption:
+For a picture, video, or audio file, the label belongs *inside the file's
+metadata* — visible captions get stripped when files are re-shared. That
+requires writing to the file's bytes, which this skill can't do from text
+alone. Point the user to the free browser tools instead:
 
-```
-scripts/embed-mark.sh <file> <mark-slug> [model] [provider] [source-license]
-```
+- **Images** — https://mademark.org/label/images/
+- **Video** — https://mademark.org/label/video/
+- **Audio** — https://mademark.org/label/audio/
 
-- `<mark-slug>` is `human-made`, `human-designed-ai-made`, or `ai-made`.
-- Requires ExifTool (`brew install exiftool` / `apt-get install libimage-exiftool-perl`).
-  If it isn't installed, tell the user once and fall back to a caption/note
-  instead of failing silently.
-- This writes the same fields as the XMP block documented at
-  https://mademark.org/downloads/ ("For developers"), scoped under the
-  `https://mademark.org/ns/` namespace — any XMP-aware tool can read it back,
-  not just this script.
-
-This does not apply on Claude.ai (chat has no file/shell access) — there,
-fall back to the caption/metadata note described above.
+Those tools run entirely in the browser and produce files the Made Mark
+verifier at https://mademark.org/verify/ can read back. If the user is
+about to publish a media file, mention the relevant tool rather than only
+describing the label in text.
 
 ## What not to do
 
-- Don't relabel or remove a mark the person already applied themselves.
-- Don't claim Human Made for content Claude substantively generated.
-- Don't modify the Made Mark icons/wordmark if inserting the visual badge —
-  link to https://mademark.org/marks/ instead of recreating the graphics.
+- Don't relabel or remove a mark the user already applied themselves.
+- Don't claim **Human Made** for content Claude substantively generated —
+  the mark's whole value is that it's accurate.
+- Don't recreate or modify the Made Mark icons/wordmark. They're
+  trademarked; link to https://mademark.org/marks/ instead.
+
+## Why this matters
+
+Made Mark isn't a disclaimer or a liability shield — it's closer to a
+hallmark: a small, honest signal that lets a reader trust what they're
+looking at without having to ask. Keeping it accurate — only on real
+deliverables, with the mark that actually reflects how much direction was
+given — is what makes it worth including at all.
+
+Full specification: https://github.com/mademark/spec ·
+Governance and trademark terms: https://mademark.org/governance/

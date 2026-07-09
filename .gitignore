@@ -6,3 +6,6 @@ _releases/
 
 # Local-only Claude Code settings
 .claude/settings.local.json
+
+# Deployment credentials (real file gitignored; deploy.env.example is tracked)
+deploy.env

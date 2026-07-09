@@ -499,6 +499,16 @@ code {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Prose snippets (e.g. custom-instruction text to paste into a settings
+   box) are stored as one continuous string and soft-wrapped here, so the
+   copy is clean running text — no hard line breaks baked into the paste.
+   Code blocks keep white-space: pre above, where line breaks are meaningful. */
+.code-block.is-prose pre {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  overflow-x: visible;
+}
+
 .code-block .copy-btn {
   position: absolute;
   top: 8px;

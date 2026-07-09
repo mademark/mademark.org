@@ -1,9 +1,13 @@
 /* ── Made Mark XMP embedding library ─────────────────────────────────
    Shared by the /label/ format tools. Builds an mm: namespace XMP
-   packet and splices it into image bytes:
+   packet and writes it into the file:
      JPEG -> APP1 segment after the leading APP0/APP1 run
      PNG  -> iTXt "XML:com.adobe.xmp" chunk after IHDR
-   Existing Made Mark XMP is replaced, never duplicated.
+     GIF  -> "XMP DataXMP" Application Extension after the screen
+             descriptor, in the Adobe raw-packet + magic-trailer form
+     SVG  -> <metadata id="made-mark-xmp"> element after the root <svg>
+   The raster/GIF paths splice bytes; SVG is text, so its path takes and
+   returns a string. Existing Made Mark XMP is replaced, never duplicated.
    Exposes window.MMXMP. No dependencies.                             */
 
 (function () {
@@ -125,6 +129,130 @@
     return concat([cleaned.subarray(0, insertAt), chunk, cleaned.subarray(insertAt)]);
   }
 
+  /* ── GIF: "XMP DataXMP" Application Extension ──
+     The label rides in an Application Extension whose 11-byte identifier
+     is "XMP DataXMP" (app id "XMP Data" + auth code "XMP"). The XMP packet
+     is stored as ordinary GIF data sub-blocks (each ≤255 bytes, length-
+     prefixed, 0x00-terminated) — provably valid for any packet content, so
+     the GIF still decodes everywhere, and exiftool/Adobe reassemble the
+     packet by concatenating the sub-blocks. (We deliberately avoid the raw-
+     packet + "magic trailer" variant: its block-skip walk can terminate one
+     byte early depending on packet bytes, which trips strict decoders.)
+     Any existing Made Mark block is dropped first so re-labeling never
+     duplicates.                                                        */
+  var GIF_XMP_ID = 'XMP DataXMP';                          // app id(8) + auth code(3)
+  var GIF_XMP_SIG = [0x21, 0xFF, 0x0B, 0x58, 0x4D, 0x50, 0x20, 0x44, 0x61, 0x74, 0x61, 0x58, 0x4D, 0x50];
+  function gifSubBlocks(packet) {
+    var parts = [], o = 0;
+    while (o < packet.length) {
+      var n = Math.min(255, packet.length - o);
+      parts.push(new Uint8Array([n]));
+      parts.push(packet.subarray(o, o + n));
+      o += n;
+    }
+    parts.push(new Uint8Array([0]));                       // block terminator
+    return concat(parts);
+  }
+  function findGifXmpExt(bytes) {                           // [start, end) of the app ext, or null
+    outer:
+    for (var i = 0; i + GIF_XMP_SIG.length <= bytes.length; i++) {
+      for (var j = 0; j < GIF_XMP_SIG.length; j++) if (bytes[i + j] !== GIF_XMP_SIG[j]) continue outer;
+      var p = i + GIF_XMP_SIG.length;                      // walk the data sub-blocks to the terminator
+      while (p < bytes.length && bytes[p] !== 0) p += 1 + bytes[p];
+      return [i, Math.min(p + 1, bytes.length)];
+    }
+    return null;
+  }
+  function embedXmpGif(bytes, xmp) {
+    if (!(bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46)) throw new Error('Not a valid GIF file.');
+    // Block stream starts after the 6-byte header, 7-byte Logical Screen
+    // Descriptor, and the Global Color Table if the packed field flags one.
+    var packed = bytes[10];
+    var gct = (packed & 0x80) ? 3 * (1 << ((packed & 0x07) + 1)) : 0;
+    var insertAt = 13 + gct;
+
+    var existing = findGifXmpExt(bytes);
+    if (existing) {
+      bytes = concat([bytes.subarray(0, existing[0]), bytes.subarray(existing[1])]);
+      if (existing[1] <= insertAt) insertAt -= (existing[1] - existing[0]);
+    }
+
+    var enc = new TextEncoder();
+    var id = enc.encode(GIF_XMP_ID), data = gifSubBlocks(enc.encode(xmp));
+    var ext = new Uint8Array(3 + id.length + data.length);
+    ext[0] = 0x21; ext[1] = 0xFF; ext[2] = 0x0B;
+    ext.set(id, 3);
+    ext.set(data, 3 + id.length);
+    return concat([bytes.subarray(0, insertAt), ext, bytes.subarray(insertAt)]);
+  }
+
+  /* ── SVG: <metadata> element carrying the XMP packet ──
+     SVG is XML, so the label rides inside the document's own
+     <metadata> element as the serialized XMP packet — the standard
+     place XMP-aware tools (exiftool, Illustrator) look. We tag the
+     element with id="made-mark-xmp" so re-labeling replaces our block
+     without touching any pre-existing <metadata>.                    */
+  var SVG_META_ID = 'made-mark-xmp';
+  var SVG_BADGE_ID = 'made-mark-badge';
+  function embedXmpSvg(svgText, xmp) {
+    var open = matchSvgOpenTag(svgText);
+    // Drop any Made Mark metadata block from a previous pass.
+    svgText = svgText.replace(
+      new RegExp('[ \\t]*<metadata id="' + SVG_META_ID + '">[\\s\\S]*?</metadata>\\n?', 'g'), '');
+    open = matchSvgOpenTag(svgText);                      // offsets shifted by the strip
+    var block = '<metadata id="' + SVG_META_ID + '">' + xmp + '</metadata>';
+    var at = open.index + open[0].length;
+    return svgText.slice(0, at) + '\n' + block + svgText.slice(at);
+  }
+
+  /* Draw the mark icon into a corner by nesting the icon's own <svg>,
+     positioned in the root's coordinate system (viewBox if present,
+     else the pixel width/height). Returns the modified SVG string. */
+  function svgWithBadge(svgText, iconSvgText, position) {
+    var open = matchSvgOpenTag(svgText);
+    var box = svgViewport(open[0]);                       // {minx,miny,w,h}
+    var s = Math.min(box.w, box.h) * 0.12;
+    var m = s * 0.5;
+    var x = position === 'bottom-left' ? box.minx + m : box.minx + box.w - m - s;
+    var y = box.miny + box.h - m - s;
+
+    var iconOpen = matchSvgOpenTag(iconSvgText);
+    var vb = iconOpen[0].match(/viewBox\s*=\s*["'][^"']*["']/i);
+    var iconInner = iconSvgText.slice(
+      iconOpen.index + iconOpen[0].length, iconSvgText.lastIndexOf('</svg>'));
+    var nested = '<svg id="' + SVG_BADGE_ID + '" x="' + fmt(x) + '" y="' + fmt(y) +
+      '" width="' + fmt(s) + '" height="' + fmt(s) + '" ' +
+      (vb ? vb[0] : 'viewBox="0 0 512 512"') +
+      ' xmlns="http://www.w3.org/2000/svg">' + iconInner + '</svg>';
+
+    // Replace an earlier badge, then insert before the final </svg>.
+    svgText = svgText.replace(
+      new RegExp('<svg id="' + SVG_BADGE_ID + '"[\\s\\S]*?</svg>', 'i'), '');
+    var close = svgText.lastIndexOf('</svg>');
+    return svgText.slice(0, close) + nested + '\n' + svgText.slice(close);
+  }
+
+  function matchSvgOpenTag(text) {
+    var m = text.match(/<svg\b[^>]*>/i);
+    if (!m) throw new Error('Not a valid SVG file (no <svg> element).');
+    return m;
+  }
+  function svgViewport(openTag) {
+    var vb = openTag.match(/viewBox\s*=\s*["']\s*([\d.eE+-]+)[\s,]+([\d.eE+-]+)[\s,]+([\d.eE+-]+)[\s,]+([\d.eE+-]+)\s*["']/i);
+    if (vb) return { minx: +vb[1], miny: +vb[2], w: +vb[3], h: +vb[4] };
+    var wa = openTag.match(/\bwidth\s*=\s*["']?\s*([\d.]+)/i);
+    var ha = openTag.match(/\bheight\s*=\s*["']?\s*([\d.]+)/i);
+    if (!wa || !ha) throw new Error('This SVG has no viewBox and no pixel width/height, so a badge can’t be placed. Use metadata only.');
+    return { minx: 0, miny: 0, w: +wa[1], h: +ha[1] };
+  }
+  function fmt(n) { return Math.round(n * 100) / 100; }
+
+  /* Fetch a mark icon as raw SVG text (for nesting as a badge). */
+  function fetchMarkIconText(markSlug) {
+    return fetch('/assets/svg/mm-icon-' + markSlug + '.svg')
+      .then(function (r) { if (!r.ok) throw new Error('Mark icon failed to load.'); return r.text(); });
+  }
+
   /* ── byte helpers ── */
   function concat(arrays) {
     var total = 0;
@@ -165,7 +293,11 @@
     buildXmp: buildXmp,
     embedXmpJpeg: embedXmpJpeg,
     embedXmpPng: embedXmpPng,
+    embedXmpGif: embedXmpGif,
+    embedXmpSvg: embedXmpSvg,
+    svgWithBadge: svgWithBadge,
     loadMarkIcon: loadMarkIcon,
+    fetchMarkIconText: fetchMarkIconText,
     MARK_LABELS: {
       'human-made': 'Human Made',
       'human-designed-ai-made': 'Human Designed, AI Made',

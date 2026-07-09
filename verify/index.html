@@ -136,7 +136,7 @@
     </div>
 
     <div class="section">
-      <h2 id="step-file">Your file <span class="caption">(JPEG, PNG, MP3, or WAV for Made Mark; JPEG, PNG, and most media for C2PA)</span></h2>
+      <h2 id="step-file">Your file <span class="caption">(JPEG, PNG, GIF, SVG, MP3, or WAV for Made Mark; JPEG, PNG, and most media for C2PA)</span></h2>
       <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-labelledby="step-file">
         <p><strong>Drop a file here</strong> or click to choose one</p>
         <input type="file" id="file-input" class="sr-only" aria-label="Choose a file to verify">
@@ -184,8 +184,9 @@
 <script>
 /* ── Made Mark file verifier ─────────────────────────────────────────
    All client-side. Two independent readers:
-   1. Made Mark label — XMP packet from JPEG (APP1) / PNG (iTXt), or
-      TXXX MADEMARK_* frames from MP3 ID3v2. Pure JS, no dependencies.
+   1. Made Mark label — XMP packet from JPEG (APP1) / PNG (iTXt) /
+      GIF (XMP app extension) / SVG (<metadata>), ICMT comment from WAV,
+      or TXXX MADEMARK_* frames from MP3 ID3v2. Pure JS, no dependencies.
    2. C2PA Content Credentials — the official c2pa JS SDK (CAI),
       dynamically imported from jsDelivr on first use so the page costs
       nothing until a file is dropped.                                */
@@ -320,12 +321,41 @@
     }
     return null;
   }
+  /* GIF: the label rides in an "XMP DataXMP" Application Extension, stored
+     as ordinary data sub-blocks. Find it and reassemble the XMP packet. */
+  function xmpFromGif(b) {
+    var sig = [0x21, 0xFF, 0x0B, 0x58, 0x4D, 0x50, 0x20, 0x44, 0x61, 0x74, 0x61, 0x58, 0x4D, 0x50];
+    outer:
+    for (var i = 0; i + sig.length <= b.length; i++) {
+      for (var j = 0; j < sig.length; j++) if (b[i + j] !== sig[j]) continue outer;
+      var p = i + sig.length, chunks = [], total = 0;
+      while (p < b.length && b[p] !== 0) {
+        var n = Math.min(b[p], b.length - p - 1);
+        chunks.push(b.subarray(p + 1, p + 1 + n)); total += n; p += 1 + b[p];
+      }
+      var out = new Uint8Array(total), off = 0;
+      chunks.forEach(function (c) { out.set(c, off); off += c.length; });
+      return new TextDecoder('utf-8').decode(out);
+    }
+    return null;
+  }
+  /* SVG is XML: the label rides in a <metadata> element, so we read the
+     whole document as text and let the shared mm: extraction below run. */
+  function isSvg(b) {
+    var n = Math.min(b.length, 512), head = '';
+    var i = (b[0] === 0xEF && b[1] === 0xBB && b[2] === 0xBF) ? 3 : 0;  // skip UTF-8 BOM
+    for (; i < n; i++) head += String.fromCharCode(b[i]);
+    return head.indexOf('<svg') !== -1 || (/^\s*<\?xml/.test(head) && head.indexOf('<svg') !== -1);
+  }
+  function xmpFromSvg(b) { return new TextDecoder('utf-8').decode(b); }
   function readMadeMark(b) {
     var xmp = null;
     if (b[0] === 0xFF && b[1] === 0xD8) xmp = xmpFromJpeg(b);
     else if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47) xmp = xmpFromPng(b);
     else if (b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 &&
              b[8] === 0x57 && b[9] === 0x41 && b[10] === 0x56 && b[11] === 0x45) return mmFromWav(b);
+    else if (b[0] === 0x47 && b[1] === 0x49 && b[2] === 0x46) xmp = xmpFromGif(b);
+    else if (isSvg(b)) xmp = xmpFromSvg(b);
     else return mmFromId3(b);
     if (!xmp) return null;
     var g = function (t) {

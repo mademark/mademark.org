@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Label images | Made Mark</title>
-  <meta name="description" content="Embed a Made Mark authorship label into a JPEG, PNG, or GIF — XMP metadata plus an optional visible badge. Runs entirely in your browser; your image never leaves your device.">
-  <link rel="canonical" href="https://mademark.org/label/images/">
+  <title>Label vector (SVG) | Made Mark</title>
+  <meta name="description" content="Embed a Made Mark authorship label into an SVG — XMP metadata in the file's own <metadata> element, plus an optional visible badge. Runs entirely in your browser; your file never leaves your device.">
+  <link rel="canonical" href="https://mademark.org/label/vector/">
   <link rel="stylesheet" href="/style.css">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Label images | Made Mark">
-  <meta property="og:description" content="Embed a Made Mark authorship label into a JPEG or PNG — XMP metadata plus an optional visible badge.">
-  <meta property="og:url" content="https://mademark.org/label/images/">
+  <meta property="og:title" content="Label vector (SVG) | Made Mark">
+  <meta property="og:description" content="Embed a Made Mark authorship label into an SVG's XMP metadata, with an optional visible badge.">
+  <meta property="og:url" content="https://mademark.org/label/vector/">
   <meta property="og:image" content="https://mademark.org/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Label images | Made Mark">
+  <meta name="twitter:title" content="Label vector (SVG) | Made Mark">
   <meta name="twitter:description" content="XMP metadata plus an optional visible badge, entirely in your browser.">
   <meta name="twitter:image" content="https://mademark.org/assets/og-image.png">
   <style>
@@ -45,6 +45,9 @@
       border: 1px solid var(--line);
       border-radius: 8px;
       margin-top: 16px;
+      /* SVGs can be transparent — a light checker keeps them legible. */
+      background:
+        repeating-conic-gradient(var(--bg) 0% 25%, var(--white) 0% 50%) 50% / 20px 20px;
     }
     /* display:block above would defeat the hidden attribute */
     .img-preview[hidden] { display: none; }
@@ -121,26 +124,26 @@
       <span class="sep" aria-hidden="true">›</span>
       <a href="/label/">Label your work</a>
       <span class="sep" aria-hidden="true">›</span>
-      <span aria-current="page">Images</span>
+      <span aria-current="page">Vector</span>
     </nav>
 
     <div class="section">
-      <h1>Label images</h1>
-      <p>Embed a Made Mark label into a JPEG, PNG, or GIF. The label is written into the file's XMP metadata, with an optional visible badge drawn onto the image. Everything runs in your browser — your image never leaves your device.</p>
+      <h1>Label vector graphics</h1>
+      <p>Embed a Made Mark label into an SVG. The label is written into the file's own <span class="inline-code">&lt;metadata&gt;</span> element as XMP — the standard place XMP-aware tools look — with an optional visible badge nested into a corner. Everything runs in your browser; your file never leaves your device.</p>
     </div>
 
     <div class="section">
-      <h2 id="step-file">1 · Your image <span class="caption">(JPEG, PNG, or GIF)</span></h2>
+      <h2 id="step-file">1 · Your graphic <span class="caption">(SVG)</span></h2>
       <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-labelledby="step-file">
-        <p><strong>Drop an image here</strong> or click to choose a file</p>
-        <input type="file" id="file-input" accept="image/jpeg,image/png,image/gif" class="sr-only" aria-label="Choose an image file">
+        <p><strong>Drop an SVG here</strong> or click to choose a file</p>
+        <input type="file" id="file-input" accept="image/svg+xml,.svg" class="sr-only" aria-label="Choose an SVG file">
       </div>
       <p class="tool-status" id="file-status" aria-live="polite"></p>
-      <img id="preview" class="img-preview" alt="Preview of your uploaded image" hidden>
+      <img id="preview" class="img-preview" alt="Preview of your uploaded graphic" hidden>
     </div>
 
     <div class="section">
-      <h2 id="mark-choice">2 · How was this image made? <span class="caption">(required)</span></h2>
+      <h2 id="mark-choice">2 · How was this graphic made? <span class="caption">(required)</span></h2>
       <div class="gen-cards" role="radiogroup" aria-labelledby="mark-choice">
         <button class="gen-card" type="button" role="radio" aria-checked="false" data-mark="human-made">
           <img src="/assets/svg/mm-icon-human-made.svg" alt="" aria-hidden="true">
@@ -148,7 +151,7 @@
         </button>
         <button class="gen-card" type="button" role="radio" aria-checked="false" data-mark="human-designed-ai-made">
           <img src="/assets/svg/mm-icon-human-designed-ai-made.svg" alt="" aria-hidden="true">
-          <span class="gen-card-text"><strong>Human Designed, AI Made</strong><span>A person shaped the intent — AI produced the image.</span></span>
+          <span class="gen-card-text"><strong>Human Designed, AI Made</strong><span>A person shaped the intent — AI produced the graphic.</span></span>
         </button>
         <button class="gen-card" type="button" role="radio" aria-checked="false" data-mark="ai-made">
           <img src="/assets/svg/mm-icon-ai-made.svg" alt="" aria-hidden="true">
@@ -174,7 +177,7 @@
 
     <div class="section">
       <h2>3 · Visible badge <span class="caption">(optional)</span></h2>
-      <p>Draws the mark icon onto a corner of the image. Without a badge the label is metadata-only and your image bytes are untouched apart from the XMP block — no re-encoding, no quality loss.</p>
+      <p>Nests the mark icon into a corner of the graphic. Because the badge is itself vector, it stays crisp at any size. Without a badge the label is metadata-only — only a <span class="inline-code">&lt;metadata&gt;</span> element is added; the rest of your SVG is untouched.</p>
       <div class="gen-input-group" style="margin-top: 16px;">
         <label for="badge-pos">Badge placement</label>
         <select id="badge-pos" style="display:block;width:100%;border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:16px;color:var(--ink);font-family:'Source Sans 3',system-ui,sans-serif;background:var(--white);min-height:44px;">
@@ -183,17 +186,16 @@
           <option value="bottom-left">Bottom left</option>
         </select>
       </div>
-      <p class="caption">JPEGs are re-encoded at high quality when a badge is drawn; PNGs stay lossless either way.</p>
-      <p class="caption" id="gif-note" hidden>GIFs are labeled in metadata only — a visible badge would require re-encoding and flatten the animation, so the badge option is disabled. The label rides in the file's XMP; the animation is untouched.</p>
+      <p class="caption">The badge is placed using the SVG's <span class="inline-code">viewBox</span> (or its pixel width and height). SVG stays lossless vector either way — nothing is ever rasterized.</p>
     </div>
 
     <div class="section">
       <h2>4 · Download</h2>
       <p class="tool-status" id="label-echo" aria-live="polite"></p>
-      <p style="margin-top: 16px;"><button id="download-btn" class="btn-pack" type="button" disabled>Download labeled image</button></p>
+      <p style="margin-top: 16px;"><button id="download-btn" class="btn-pack" type="button" disabled>Download labeled SVG</button></p>
       <p class="tool-status" id="result-status" aria-live="polite"></p>
       <div class="error-msg" id="error-box" hidden></div>
-      <p class="caption" style="margin-top: 16px;">Verify the embedded label with <span class="inline-code">exiftool -XMP-mm:all yourfile.jpg</span>, or inspect it in any XMP-aware tool. Some platforms strip metadata on upload — that's a <a href="/implement/#xmp" class="text-link">platform behavior</a>, not a Made Mark limitation.</p>
+      <p class="caption" style="margin-top: 16px;">Verify the embedded label with <span class="inline-code">exiftool -XMP-mm:all yourfile.svg</span>, or inspect it in any XMP-aware tool. Some optimizers (e.g. SVGO) strip <span class="inline-code">&lt;metadata&gt;</span> by default — that's a <a href="/implement/#xmp" class="text-link">tool behavior</a>, not a Made Mark limitation.</p>
     </div>
 
     <footer class="site-footer">
@@ -213,15 +215,14 @@
 
 <script src="/assets/js/mm-xmp.js"></script>
 <script>
-/* ── Made Mark image labeler ─────────────────────────────────────────
-   All client-side. Pipeline:
-   1. If a visible badge is requested, draw image + badge on a canvas and
-      re-export (JPEG q0.92 / PNG). Otherwise keep the original bytes.
+/* ── Made Mark vector (SVG) labeler ──────────────────────────────────
+   All client-side. SVG is XML, so unlike the raster tools this works on
+   text, not bytes. Pipeline:
+   1. If a visible badge is requested, fetch the mark icon and nest it
+      into a corner of the SVG in the root's coordinate system.
    2. Build an XMP packet with the mm: namespace fields.
-   3. Splice the packet into the file: JPEG -> APP1 segment after the
-      leading APP0/APP1 run (replacing any existing XMP APP1);
-      PNG -> iTXt "XML:com.adobe.xmp" chunk after IHDR (replacing any
-      existing one).
+   3. Write it into a <metadata id="made-mark-xmp"> element placed right
+      after the opening <svg> tag (replacing any earlier Made Mark block).
    Exposed on window.MMTool for testing and reuse.                    */
 
 (function () {
@@ -229,53 +230,26 @@
 
   var MARK_LABELS = window.MMXMP.MARK_LABELS;
 
-  /* ── visible badge ── */
-  function drawBadged(img, icon, position, mime) {
-    var canvas = document.createElement('canvas');
-    canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
-    var ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-    // Flat, borderless: the icon's own white square provides the
-    // contrast surface (contentcredentials.org pin treatment).
-    var size = Math.max(24, Math.round(Math.min(canvas.width, canvas.height) * 0.06));
-    var margin = Math.round(size * 0.5);
-    var x = position === 'bottom-left' ? margin : canvas.width - margin - size;
-    var y = canvas.height - margin - size;
-    ctx.drawImage(icon, x, y, size, size);
-    return new Promise(function (resolve, reject) {
-      canvas.toBlob(function (blob) {
-        if (!blob) return reject(new Error('Could not export the image.'));
-        resolve(blob);
-      }, mime, mime === 'image/jpeg' ? 0.92 : undefined);
-    });
-  }
   /* ── main pipeline ── */
-  function processImage(fileBytes, mime, opts) {
-    // opts: {mark, model, provider, license, badge: 'none'|'bottom-left'|'bottom-right', imgEl}
-    // GIF is metadata-only: canvas can't re-encode GIF, so a badge would
-    // flatten the animation — we never draw one, keeping the file intact.
+  function processSvg(svgText, opts) {
+    // opts: {mark, model, provider, license, badge: 'none'|'bottom-left'|'bottom-right'}
     var xmp = window.MMXMP.buildXmp(opts.mark, opts.model, opts.provider, opts.license);
-    var step = Promise.resolve(fileBytes);
-    if (opts.badge && opts.badge !== 'none' && mime !== 'image/gif') {
-      step = window.MMXMP.loadMarkIcon(opts.mark)
-        .then(function (icon) { return drawBadged(opts.imgEl, icon, opts.badge, mime); })
-        .then(function (blob) { return blob.arrayBuffer(); })
-        .then(function (buf) { return new Uint8Array(buf); });
+    var step = Promise.resolve(svgText);
+    if (opts.badge && opts.badge !== 'none') {
+      step = window.MMXMP.fetchMarkIconText(opts.mark).then(function (iconText) {
+        return window.MMXMP.svgWithBadge(svgText, iconText, opts.badge);
+      });
     }
-    return step.then(function (bytes) {
-      if (mime === 'image/gif') return window.MMXMP.embedXmpGif(bytes, xmp);
-      return mime === 'image/png' ? window.MMXMP.embedXmpPng(bytes, xmp) : window.MMXMP.embedXmpJpeg(bytes, xmp);
-    });
+    return step.then(function (text) { return window.MMXMP.embedXmpSvg(text, xmp); });
   }
 
   window.MMTool = {
-    buildXmp: window.MMXMP.buildXmp, embedXmpJpeg: window.MMXMP.embedXmpJpeg,
-    embedXmpPng: window.MMXMP.embedXmpPng, embedXmpGif: window.MMXMP.embedXmpGif,
-    processImage: processImage
+    buildXmp: window.MMXMP.buildXmp, embedXmpSvg: window.MMXMP.embedXmpSvg,
+    svgWithBadge: window.MMXMP.svgWithBadge, processSvg: processSvg
   };
 
   /* ── UI wiring ── */
-  var state = { file: null, bytes: null, mime: null, mark: null };
+  var state = { file: null, text: null };
   var dropZone = document.getElementById('drop-zone');
   var fileInput = document.getElementById('file-input');
   var fileStatus = document.getElementById('file-status');
@@ -290,7 +264,7 @@
     errorBox.hidden = !msg;
   }
   function refresh() {
-    downloadBtn.disabled = !(state.bytes && state.mark);
+    downloadBtn.disabled = !(state.text && state.mark);
     if (state.mark) {
       var parts = ['MM', MARK_LABELS[state.mark]];
       var model = document.getElementById('in-model').value.trim();
@@ -304,32 +278,30 @@
       labelEcho.textContent = 'Choose a mark in step 2 to enable the download.';
     }
   }
+  state.mark = null;
 
-  var badgePos = document.getElementById('badge-pos');
-  var gifNote = document.getElementById('gif-note');
-  function updateBadgeAvailability() {
-    var isGif = state.mime === 'image/gif';
-    if (isGif) badgePos.value = 'none';
-    badgePos.disabled = isGif;
-    gifNote.hidden = !isGif;
+  function isSvgFile(file) {
+    return file.type === 'image/svg+xml' || /\.svg$/i.test(file.name);
   }
 
   function acceptFile(file) {
     setError('');
     resultStatus.textContent = '';
     if (!file) return;
-    if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
-      setError('Only JPEG, PNG, and GIF are supported here. For SVG use the vector tool; for other formats, see the XMP guide on the Implement page.');
+    if (!isSvgFile(file)) {
+      setError('Only SVG is supported here. For JPEG or PNG, use the images tool; for other formats, see the XMP guide on the Implement page.');
       return;
     }
-    file.arrayBuffer().then(function (buf) {
+    file.text().then(function (text) {
+      if (text.indexOf('<svg') === -1) {
+        setError('That file doesn’t look like an SVG — no <svg> element found.');
+        return;
+      }
       state.file = file;
-      state.bytes = new Uint8Array(buf);
-      state.mime = file.type;
+      state.text = text;
       preview.src = URL.createObjectURL(file);
       preview.hidden = false;
       fileStatus.textContent = file.name + ' — ' + Math.round(file.size / 1024) + ' KB';
-      updateBadgeAvailability();
       refresh();
     });
   }
@@ -370,22 +342,20 @@
       model: document.getElementById('in-model').value.trim(),
       provider: document.getElementById('in-provider').value.trim(),
       license: document.getElementById('in-license').value.trim(),
-      badge: document.getElementById('badge-pos').value,
-      imgEl: preview
+      badge: document.getElementById('badge-pos').value
     };
-    processImage(state.bytes, state.mime, opts).then(function (outBytes) {
-      var ext = state.mime === 'image/gif' ? '.gif' : (state.mime === 'image/png' ? '.png' : '.jpg');
-      var base = state.file.name.replace(/\.(jpe?g|png|gif)$/i, '');
-      var blob = new Blob([outBytes], { type: state.mime });
+    processSvg(state.text, opts).then(function (outText) {
+      var base = state.file.name.replace(/\.svg$/i, '');
+      var blob = new Blob([outText], { type: 'image/svg+xml' });
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = base + '-mademark' + ext;
+      a.download = base + '-mademark.svg';
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
       resultStatus.textContent = 'Done — saved as ' + a.download + ' (' + Math.round(blob.size / 1024) + ' KB).';
     }).catch(function (err) {
       resultStatus.textContent = '';
-      setError(err.message || 'Something went wrong processing the image.');
+      setError(err.message || 'Something went wrong processing the SVG.');
     });
   });
 

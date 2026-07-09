@@ -503,6 +503,12 @@ code {
    box) are stored as one continuous string and soft-wrapped here, so the
    copy is clean running text — no hard line breaks baked into the paste.
    Code blocks keep white-space: pre above, where line breaks are meaningful. */
+.code-block.is-prose {
+  /* Reserve a top strip for the Copy button so it never overlaps the
+     wrapped first line of prose (which fills the full width on narrow
+     screens). The button itself is opaque; this keeps text out from under it. */
+  padding-top: 52px;
+}
 .code-block.is-prose pre {
   white-space: pre-wrap;
   overflow-wrap: break-word;

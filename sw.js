@@ -1,10 +1,12 @@
 /* ── Made Mark service worker ────────────────────────────────────────
    Strategy: pages (navigations) are network-first so deploys show up
-   immediately, falling back to cache offline; assets are cache-first.
-   Same-origin plus the two pinned CDN libraries are cached at runtime.
+   immediately, falling back to cache offline; assets are stale-while-
+   revalidate (served from cache for speed, but refreshed in the background
+   so the next load picks up any updated CSS/JS). Same-origin plus the two
+   pinned CDN libraries are cached at runtime.
    Bump CACHE on each release so stale caches are dropped on activate. */
 
-var CACHE = 'mademark-v2.13.1';
+var CACHE = 'mademark-v2.13.3';
 
 var CORE = [
   '/',
@@ -68,17 +70,20 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // Cache-first for assets
+  // Stale-while-revalidate for assets: serve the cached copy immediately when
+  // present (fast, works offline), but always fetch a fresh copy in the
+  // background and update the cache — so an updated CSS/JS file is picked up on
+  // the next load without waiting for a CACHE bump. Falls back to cache on error.
   e.respondWith(
     caches.match(e.request).then(function (hit) {
-      if (hit) return hit;
-      return fetch(e.request).then(function (res) {
+      var fetchPromise = fetch(e.request).then(function (res) {
         if (res.ok || res.type === 'opaque') {
           var copy = res.clone();
           caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
         }
         return res;
-      });
+      }).catch(function () { return hit; });
+      return hit || fetchPromise;
     })
   );
 });

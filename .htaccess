@@ -17,14 +17,29 @@ DirectoryIndex index.html
   Header set Content-Disposition attachment
 </FilesMatch>
 
-# Cache static assets for performance
+# Caching. Images rarely change, so cache them long. CSS/JS/HTML change with
+# each release, so they revalidate on every visit (a cheap 304 when unchanged)
+# — this way site updates reach returning visitors on their next load instead
+# of being pinned for up to a week by the old CSS cache.
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/svg+xml "access plus 1 month"
   ExpiresByType image/png "access plus 1 month"
-  ExpiresByType text/css "access plus 1 week"
-  ExpiresByType text/html "access plus 1 hour"
   ExpiresByType application/ld+json "access plus 1 hour"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # no-cache means "cache but always revalidate before use" — the browser
+  # sends a conditional request and the server answers 304 (tiny) when the
+  # file is unchanged, so we keep the speed but never serve stale CSS/JS/HTML.
+  <FilesMatch "\.(css|js|html)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # The service worker file must never be cached, or the browser won't see new
+  # versions — and then no cache update (of anything) can ever propagate.
+  <FilesMatch "^sw\.js$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate"
+  </FilesMatch>
 </IfModule>
 
 # Block web access to the local version archive (should never be uploaded,

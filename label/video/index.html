@@ -143,7 +143,7 @@
         </button>
       </div>
 
-      <div class="gen-inputs">
+      <div class="gen-inputs" id="tool-details">
         <div class="gen-input-group">
           <label for="in-model">Model (optional)</label>
           <input type="text" id="in-model" placeholder="e.g. Claude Sonnet 4.6">
@@ -326,6 +326,7 @@
       });
       card.classList.add('selected'); card.setAttribute('aria-checked', 'true');
       state.mark = card.getAttribute('data-mark');
+      document.getElementById('tool-details').style.display = state.mark === 'human-made' ? 'none' : '';
       refresh();
     });
   });
